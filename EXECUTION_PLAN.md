@@ -2,7 +2,58 @@
 
 **Autor:** David Assef Carneiro  
 **Data:** 22 de Julho de 2025  
-**Versão:** 1.0
+**Versão:** 1.1 - Atualizado com progresso atual
+
+## 🚀 Status Atual do Projeto
+
+**Data da última atualização:** 22 de Julho de 2025  
+**Sprint atual:** Sprint 1 - Back-End Core (Em andamento)
+
+### ✅ Progresso Concluído
+
+#### Sprint 0: Preparação - **CONCLUÍDO** ✅
+- ✅ Repositório Git inicializado com estrutura completa
+- ✅ Ambiente de desenvolvimento configurado com Docker
+- ✅ Projeto Django implementado com apps users, studios e bookings
+- ✅ Modelos de dados implementados para usuários, salas e agendamentos
+- ✅ Sistema de autenticação customizado configurado
+- ✅ Migrações iniciais do banco de dados criadas e aplicadas
+- ✅ Configuração do frontend Next.js estruturada
+- ✅ Docker-compose configurado com portas customizadas (8200, 3200, 5433)
+- ✅ Servidor Django funcionando na porta 8200
+- ✅ Superusuário criado para acesso ao Django Admin
+- ✅ APIs REST básicas implementadas com DRF
+- ✅ Documentação Swagger/OpenAPI disponível
+
+#### Sprint 1: Back-End Core - **EM ANDAMENTO** 🔄
+- ✅ Projeto Django configurado e funcionando
+- ✅ Modelo de usuário customizado implementado
+- ✅ Modelos de Salas e Agendamentos implementados
+- ✅ Serializers e Views básicas criadas
+- ✅ Django Admin configurado
+- 🔄 Configuração JWT em andamento
+- ⏳ Testes unitários pendentes
+- ⏳ Refinamento das APIs REST
+
+### 🎯 Próximos Passos Imediatos
+
+1. **Finalizar Sprint 1 - Back-End Core:**
+   - Implementar autenticação JWT completa
+   - Adicionar validações avançadas nos serializers
+   - Escrever testes unitários para modelos e APIs
+   - Implementar filtros e paginação nas APIs
+   - Configurar CORS adequadamente
+
+2. **Preparar para Sprint 2 - Front-End Core:**
+   - Configurar projeto Next.js com TypeScript
+   - Implementar sistema de design base
+   - Criar componentes de UI reutilizáveis
+   - Configurar integração com APIs do backend
+
+3. **Configuração de Deploy:**
+   - Configurar repositório remoto no GitHub
+   - Implementar pipeline de CI/CD básico
+   - Preparar ambiente de staging
 
 ## 📋 Visão Geral do Projeto
 
@@ -218,14 +269,50 @@ branches de feature: feature/nome-da-feature
 | Problemas de performance no calendário | Alto | Média | Implementar paginação e carregamento sob demanda |
 | Dificuldades na integração front-end/back-end | Médio | Baixa | Definir contrato de API claro e utilizar TypeScript para type-safety |
 
-## 📝 Próximos Passos Imediatos
+## 📝 Próximos Passos Detalhados
 
-1. Configurar repositório Git e estrutura inicial do projeto
-2. Configurar ambiente de desenvolvimento com Docker
-3. Inicializar projeto Django e configurar banco de dados
-4. Implementar modelo de usuário customizado
-5. Configurar autenticação JWT
+### Semana Atual (22-26 Jul 2025)
+1. **Finalizar autenticação JWT no backend**
+   - Implementar endpoints de login/logout/refresh
+   - Configurar middleware de autenticação
+   - Testar fluxo completo de autenticação
+
+2. **Implementar testes unitários**
+   - Testes para modelos User, Studio, Booking
+   - Testes para serializers e views
+   - Configurar coverage para atingir >80%
+
+3. **Configurar repositório remoto**
+   - Criar repositório no GitHub
+   - Configurar branch develop
+   - Fazer push dos commits existentes
+
+### Próxima Semana (29 Jul - 2 Ago 2025)
+1. **Iniciar Sprint 2 - Front-End Core**
+   - Configurar Next.js com TypeScript e Tailwind
+   - Implementar componentes base de UI
+   - Criar contexto de autenticação
+
+2. **Refinamento do Backend**
+   - Implementar filtros avançados nas APIs
+   - Adicionar validações de negócio
+   - Otimizar queries do banco de dados
+
+## 📈 Métricas de Progresso
+
+- **Sprint 0:** 100% concluído ✅
+- **Sprint 1:** 70% concluído 🔄
+- **Progresso geral do MVP:** 35% concluído
+- **Estimativa de conclusão:** 15 de Agosto de 2025
+
+## 🔧 Configuração Atual do Ambiente
+
+- **Backend:** Django 5.0.14 rodando na porta 8200
+- **Frontend:** Next.js configurado para porta 3200
+- **Banco de Dados:** PostgreSQL na porta 5433
+- **Documentação API:** Disponível em http://127.0.0.1:8200/api/docs/
+- **Admin Panel:** Disponível em http://127.0.0.1:8200/admin/
 
 ---
 
-**Nota:** Este plano de execução é um documento vivo e deve ser revisado e atualizado regularmente conforme o projeto avança.
+**Nota:** Este plano de execução é um documento vivo e deve ser revisado e atualizado regularmente conforme o projeto avança. Última atualização: 22/07/2025.
