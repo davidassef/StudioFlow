@@ -8,6 +8,7 @@
 
 **Data da última atualização:** 22 de Julho de 2025  
 **Sprint atual:** Sprint 1 - Back-End Core (Em andamento)
+**Commits realizados:** 3 commits organizados tecnicamente
 
 ### ✅ Progresso Concluído
 
@@ -24,36 +25,47 @@
 - ✅ Superusuário criado para acesso ao Django Admin
 - ✅ APIs REST básicas implementadas com DRF
 - ✅ Documentação Swagger/OpenAPI disponível
+- ✅ Configuração de portas personalizadas implementada
+- ✅ Correção do módulo django-filter aplicada
 
-#### Sprint 1: Back-End Core - **EM ANDAMENTO** 🔄
+#### Sprint 1: Back-End Core - **EM ANDAMENTO** 🔄 (75% concluído)
 - ✅ Projeto Django configurado e funcionando
 - ✅ Modelo de usuário customizado implementado
 - ✅ Modelos de Salas e Agendamentos implementados
 - ✅ Serializers e Views básicas criadas
 - ✅ Django Admin configurado
+- ✅ Filtros django-filter configurados
 - 🔄 Configuração JWT em andamento
 - ⏳ Testes unitários pendentes
 - ⏳ Refinamento das APIs REST
 
 ### 🎯 Próximos Passos Imediatos
 
-1. **Finalizar Sprint 1 - Back-End Core:**
-   - Implementar autenticação JWT completa
-   - Adicionar validações avançadas nos serializers
-   - Escrever testes unitários para modelos e APIs
-   - Implementar filtros e paginação nas APIs
-   - Configurar CORS adequadamente
+1. **Configuração de Repositório Remoto (URGENTE):**
+   - Criar repositório no GitHub para o projeto StudioFlow
+   - Configurar origin remoto e fazer push dos commits existentes
+   - Configurar branch develop para desenvolvimento
+   - Implementar pipeline de CI/CD básico
 
-2. **Preparar para Sprint 2 - Front-End Core:**
-   - Configurar projeto Next.js com TypeScript
-   - Implementar sistema de design base
+2. **Finalizar Sprint 1 - Back-End Core:**
+   - Implementar autenticação JWT completa com refresh tokens
+   - Adicionar validações avançadas nos serializers
+   - Escrever testes unitários para modelos e APIs (cobertura >80%)
+   - Implementar filtros avançados e paginação nas APIs
+   - Configurar CORS adequadamente para produção
+   - Adicionar logging e tratamento de erros
+
+3. **Preparar para Sprint 2 - Front-End Core:**
+   - Configurar projeto Next.js com TypeScript e Tailwind CSS
+   - Implementar sistema de design base (UI Kit)
    - Criar componentes de UI reutilizáveis
    - Configurar integração com APIs do backend
+   - Implementar contexto de autenticação
 
-3. **Configuração de Deploy:**
-   - Configurar repositório remoto no GitHub
-   - Implementar pipeline de CI/CD básico
+4. **Configuração de Deploy:**
    - Preparar ambiente de staging
+   - Configurar variáveis de ambiente para produção
+   - Otimizar Docker para produção
 
 ## 📋 Visão Geral do Projeto
 
@@ -272,38 +284,65 @@ branches de feature: feature/nome-da-feature
 ## 📝 Próximos Passos Detalhados
 
 ### Semana Atual (22-26 Jul 2025)
-1. **Finalizar autenticação JWT no backend**
+1. **URGENTE: Configurar repositório remoto**
+   - Criar repositório no GitHub: github.com/davidassef/studioflow
+   - Configurar origin remoto: `git remote add origin <url>`
+   - Fazer push dos 3 commits existentes: `git push -u origin main`
+   - Configurar branch develop: `git checkout -b develop`
+
+2. **Finalizar autenticação JWT no backend**
+   - Instalar e configurar djangorestframework-simplejwt
    - Implementar endpoints de login/logout/refresh
    - Configurar middleware de autenticação
    - Testar fluxo completo de autenticação
 
-2. **Implementar testes unitários**
+3. **Implementar testes unitários**
+   - Configurar pytest-django e factory-boy
    - Testes para modelos User, Studio, Booking
    - Testes para serializers e views
    - Configurar coverage para atingir >80%
 
-3. **Configurar repositório remoto**
-   - Criar repositório no GitHub
-   - Configurar branch develop
-   - Fazer push dos commits existentes
-
 ### Próxima Semana (29 Jul - 2 Ago 2025)
 1. **Iniciar Sprint 2 - Front-End Core**
-   - Configurar Next.js com TypeScript e Tailwind
-   - Implementar componentes base de UI
-   - Criar contexto de autenticação
+   - Configurar Next.js 14 com TypeScript e Tailwind CSS
+   - Implementar componentes base de UI (Button, Input, Card, Modal)
+   - Criar contexto de autenticação com JWT
+   - Configurar Axios para chamadas à API
 
 2. **Refinamento do Backend**
-   - Implementar filtros avançados nas APIs
-   - Adicionar validações de negócio
+   - Implementar filtros avançados nas APIs com django-filter
+   - Adicionar validações de negócio nos serializers
    - Otimizar queries do banco de dados
+   - Configurar CORS para desenvolvimento e produção
+
+3. **Configuração de CI/CD**
+   - Configurar GitHub Actions para testes automatizados
+   - Implementar pipeline de deploy para staging
+   - Configurar variáveis de ambiente no GitHub Secrets
 
 ## 📈 Métricas de Progresso
 
 - **Sprint 0:** 100% concluído ✅
-- **Sprint 1:** 70% concluído 🔄
-- **Progresso geral do MVP:** 35% concluído
+- **Sprint 1:** 75% concluído 🔄
+- **Progresso geral do MVP:** 38% concluído
+- **Commits realizados:** 3 commits organizados
+- **Repositório remoto:** ⏳ Pendente configuração
 - **Estimativa de conclusão:** 15 de Agosto de 2025
+
+### 📊 Detalhamento do Progresso
+
+**Sprint 0 - Preparação (100% ✅)**
+- Estrutura do projeto: 100%
+- Configuração do ambiente: 100%
+- Documentação inicial: 100%
+
+**Sprint 1 - Back-End Core (75% 🔄)**
+- Modelos de dados: 100%
+- APIs básicas: 100%
+- Django Admin: 100%
+- Autenticação JWT: 50%
+- Testes unitários: 0%
+- Filtros e validações: 80%
 
 ## 🔧 Configuração Atual do Ambiente
 
