@@ -9,7 +9,7 @@ services:
     volumes:
       - ./backend:/app
     ports:
-      - "8200:8000"
+      - "5000:8000"
     environment:
       - DEBUG=1
       - SECRET_KEY=dev_secret_key_change_in_production
@@ -36,10 +36,10 @@ services:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - "3200:3000"
+      - "5102:3000"
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://localhost:8200/api/v1
+      - NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
     depends_on:
       - backend
     command: npm run dev
