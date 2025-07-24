@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 """
-Script para iniciar o servidor Django na porta 8200.
+Script para iniciar o servidor Django na porta 5000.
 """
 import os
 import sys
 
 def main():
-    """Inicia o servidor Django na porta 8200."""
+    """Inicia o servidor Django na porta 5000."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "studioflow.settings")
     try:
         from django.core.management import execute_from_command_line
@@ -17,8 +17,8 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     
-    # Define a porta 8200 para o servidor
-    sys.argv = [sys.argv[0], "runserver", "0.0.0.0:8200"]
+    # Define a porta 5000 para o servidor
+    sys.argv = [sys.argv[0], "runserver", "0.0.0.0:5000"]
     execute_from_command_line(sys.argv)
 
 if __name__ == "__main__":

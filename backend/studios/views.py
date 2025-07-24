@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Sala
 from .serializers import SalaSerializer
+from .filters import SalaFilter
 
 
 class SalaViewSet(viewsets.ModelViewSet):
@@ -11,7 +12,7 @@ class SalaViewSet(viewsets.ModelViewSet):
     serializer_class = SalaSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['is_disponivel', 'capacidade']
+    filterset_class = SalaFilter
     search_fields = ['nome', 'descricao']
     ordering_fields = ['nome', 'capacidade', 'preco_hora']
     

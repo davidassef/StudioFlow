@@ -19,6 +19,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import permissions
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+    TokenVerifyView,
+)
+from users.views import CustomTokenObtainPairView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -43,6 +48,11 @@ urlpatterns = [
     path('api/v1/users/', include('users.urls')),
     path('api/v1/studios/', include('studios.urls')),
     path('api/v1/bookings/', include('bookings.urls')),
+    
+    # JWT Authentication
+    path('api/auth/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/auth/verify/', TokenVerifyView.as_view(), name='token_verify'),
     
     # API Auth
     path('api/auth/', include('rest_framework.urls')),

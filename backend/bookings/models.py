@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from decimal import Decimal
 from studios.models import Sala
 
 
@@ -47,9 +48,11 @@ class Agendamento(models.Model):
     
     def save(self, *args, **kwargs):
         """Calcula o valor total do agendamento com base no preço por hora da sala."""
-        if not self.valor_total:
-            # Calcula a duração em horas
-            duracao = (self.horario_fim - self.horario_inicio).total_seconds() / 3600
-            # Calcula o valor total
-            self.valor_total = self.sala.preco_hora * duracao
+        if self.valor_total is None or self.valor_total == 0:
+            # Só recalcula se valor_total não foi definido ou é None
+            if not hasattr(self, '_skip_auto_calculation'):
+                # Calcula a duração em horas
+                duracao = (self.horario_fim - self.horario_inicio).total_seconds() / 3600
+                # Calcula o valor total convertendo duração para Decimal
+                self.valor_total = self.sala.preco_hora * Decimal(str(duracao))
         super().save(*args, **kwargs)
