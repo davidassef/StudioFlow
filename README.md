@@ -1,12 +1,87 @@
-# StudioFlow
+# StudioFlow - Sistema de Gestão para Estúdios Musicais
 
-![StudioFlow Logo](https://via.placeholder.com/150x150.png?text=StudioFlow)
+![StudioFlow Logo](https://img.shields.io/badge/StudioFlow-Sistema%20de%20Gestão-blue?style=for-the-badge&logo=music)
+
+**📅 Projeto iniciado em:** 22 de Julho de 2025  
+**📝 Última atualização:** 24 de Julho de 2025  
+**🔄 Status:** Em desenvolvimento ativo
+
+## 📋 Índice
+
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Instalação e Configuração](#instalação-e-configuração)
+- [Como Usar](#como-usar)
+- [API Endpoints](#api-endpoints)
+- [Componentes Principais](#componentes-principais)
+- [Autenticação](#autenticação)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
 
 ## 🎵 Sobre o Projeto
 
-StudioFlow é uma aplicação web (SaaS) projetada para ser um sistema de gestão completo (mini-ERP) para estúdios de música de pequeno e médio porte. O objetivo é centralizar e automatizar o agendamento de salas, o cadastro de clientes e o controle de sessões, substituindo métodos manuais como planilhas e agendas de papel.
+O **StudioFlow** é uma plataforma completa para gestão de estúdios musicais, desenvolvida para simplificar e otimizar todas as operações do seu negócio. Com uma interface moderna e intuitiva, o sistema oferece controle total sobre agendamentos, clientes, finanças e muito mais.
 
-O sistema é construído como uma Single Page Application (SPA) com um back-end robusto servindo uma API RESTful, garantindo uma experiência de usuário fluida e responsiva.
+### 📈 Status Atual do Desenvolvimento
+- **Frontend:** Next.js 14 + TypeScript + Tailwind CSS
+- **Backend:** Django 5 + DRF + PostgreSQL
+- **Testes:** 15/160 testes passando (9.4%)
+- **Cobertura:** 21.81% (Meta: 85%)
+- **Funcionalidades:** Sistema de login funcional, componentes base implementados
+
+### 🎯 Objetivos
+
+- **Simplificar** a gestão de agendamentos e reservas
+- **Otimizar** o controle financeiro e relatórios
+- **Melhorar** a experiência do cliente
+- **Automatizar** processos repetitivos
+- **Centralizar** todas as informações em um só lugar
+
+## ✨ Funcionalidades
+
+### 🗓️ Gestão de Agendamentos
+- Calendário interativo com visualização mensal/semanal/diária
+- Sistema de reservas em tempo real
+- Notificações automáticas por email/SMS
+- Controle de disponibilidade de salas
+- Histórico completo de agendamentos
+
+### 👥 Gestão de Clientes
+- Cadastro completo de clientes
+- Histórico de agendamentos por cliente
+- Sistema de preferências e observações
+- Classificação de clientes (Regular, VIP, etc.)
+- Relatórios de frequência e fidelidade
+
+### 🏢 Gestão de Salas e Equipamentos
+- Cadastro de salas com especificações técnicas
+- Controle de equipamentos disponíveis
+- Sistema de manutenção preventiva
+- Fotos e descrições detalhadas
+- Preços diferenciados por sala/horário
+
+### 💰 Controle Financeiro
+- Dashboard financeiro com métricas em tempo real
+- Controle de receitas e despesas
+- Relatórios de faturamento
+- Análise de performance mensal/anual
+- Gráficos e indicadores visuais
+
+### 🔧 Configurações Avançadas
+- Personalização de horários de funcionamento
+- Configuração de preços e promoções
+- Sistema de notificações customizável
+- Backup automático de dados
+- Integração com sistemas externos
+
+### 🔐 Sistema de Autenticação
+- Login seguro com JWT
+- Diferentes níveis de acesso (Admin, Cliente, Prestador)
+- Modal de autenticação com lazy loading
+- Recuperação de senha
+- Sessões seguras
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -82,8 +157,8 @@ python manage.py migrate
 # Crie um superusuário
 python manage.py createsuperuser
 
-# Inicie o servidor de desenvolvimento
-python manage.py runserver
+# Inicie o servidor de desenvolvimento na porta 5000
+python start_server.py
 ```
 
 ### Configuração do Front-End
@@ -98,7 +173,7 @@ npm install
 cp .env.example .env.local
 # Edite o arquivo .env.local com suas configurações
 
-# Inicie o servidor de desenvolvimento
+# Inicie o servidor de desenvolvimento na porta 5102
 npm run dev
 ```
 
