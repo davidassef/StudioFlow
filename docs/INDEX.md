@@ -1,26 +1,62 @@
-# 📚 Índice da Documentação - StudioFlow
+# 📚 Documentação do StudioFlow
 
-**📅 Projeto iniciado em:** 22 de Julho de 2025  
-**📝 Última atualização:** 24 de Julho de 2025 - 23:59  
-**🔄 Status:** Documento ativo
+**Versão:** 1.1  
+**Última Atualização:** 24 de Julho de 2025  
+**Status:** Em Desenvolvimento
 
 ---
 
 ## 🎯 Visão Geral
 
-Bem-vindo à documentação completa do **StudioFlow** - Sistema de Gestão para Estúdios Musicais. Este índice organiza toda a documentação do projeto de forma estruturada e autoexplicativa.
+Bem-vindo à documentação oficial do **StudioFlow** - uma plataforma completa para gerenciamento e agendamento de estúdios de ensaio, gravação e produção musical.
+
+### 🚀 Links Rápidos
+
+- 🏠 **[Página Inicial](../README.md)**
+- 🔧 **[Instalação](installation.md)**
+- 🏗️ **[Arquitetura](architecture.md)**
+- 📋 **[Status do Projeto](project-status.md)**
+- 🤝 **[Como Contribuir](contributing.md)**
+- 🧪 **[Guia de Testes](testing.md)**
+- 🚀 **[Deploy](deployment.md)**
+- ❓ **[FAQ](faq.md)**
 
 ---
 
-## 📋 Documentação Técnica
+## 📖 Documentação por Categoria
 
-### 🚀 **Primeiros Passos**
-- **[📖 Guia de Instalação](installation.md)** - Instruções completas para configurar o ambiente de desenvolvimento
-- **[🤝 Guia de Contribuição](contributing.md)** - Como contribuir com o projeto, padrões de código e fluxo de desenvolvimento
-- **[❓ FAQ - Perguntas Frequentes](faq.md)** - Respostas para dúvidas comuns sobre instalação, uso e funcionalidades
+### 🏁 Primeiros Passos
 
-### 🔧 **Referência Técnica**
-- **[🌐 Documentação da API](api.md)** - Referência completa dos endpoints REST, autenticação e exemplos de uso
+| Documento | Descrição | Tempo de Leitura | Status |
+|-----------|-----------|------------------|--------|
+| **[Instalação](installation.md)** | Guia completo de instalação e configuração | 15 min | ✅ Completo |
+| **[Arquitetura](architecture.md)** | Visão geral da arquitetura do sistema | 20 min | ✅ Completo |
+| **[Como Contribuir](contributing.md)** | Guia para desenvolvedores contribuírem | 10 min | ✅ Completo |
+
+### 📋 Gestão do Projeto
+
+| Documento | Descrição | Tempo de Leitura | Status |
+|-----------|-----------|------------------|--------|
+| **[Status do Projeto](project-status.md)** | Estado atual e roadmap | 8 min | ✅ Atualizado |
+| **[Especificações](specifications.md)** | Especificações detalhadas do sistema | 25 min | ✅ Completo |
+| **[Plano de Execução](execution-plan.md)** | Plano detalhado de desenvolvimento | 15 min | ✅ Completo |
+| **[FAQ](faq.md)** | Perguntas frequentes | 12 min | ✅ Completo |
+| **[Guia de Organização](REORGANIZATION_PLAN.md)** | Diretrizes para manter o projeto organizado | 10 min | ✅ Completo |
+
+### 🔧 Desenvolvimento
+
+| Documento | Descrição | Tempo de Leitura | Status |
+|-----------|-----------|------------------|--------|
+| **[API](api.md)** | Documentação completa da API REST | 30 min | ✅ Completo |
+| **[Frontend](frontend-architecture.md)** | Arquitetura e padrões do frontend | 18 min | ✅ Completo |
+| **[Design System](design-system.md)** | Guia de design e componentes | 22 min | ✅ Completo |
+| **[Testes](testing.md)** | Guia completo de estratégias de teste | 35 min | ✅ Completo |
+
+### 🚀 Operações
+
+| Documento | Descrição | Tempo de Leitura | Status |
+|-----------|-----------|------------------|--------|
+| **[Deploy](deployment.md)** | Guia de deploy e configuração de produção | 25 min | ✅ Completo |
 
 ---
 
