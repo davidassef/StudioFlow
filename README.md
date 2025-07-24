@@ -86,23 +86,23 @@ O **StudioFlow** é uma plataforma completa para gestão de estúdios musicais, 
 ## 🚀 Tecnologias Utilizadas
 
 ### Front-End
-- React 18+
-- TypeScript 5+
-- Next.js 14+
-- Tailwind CSS 3+
-- Axios
-- React Big Calendar
+- **React 18+** - Biblioteca robusta para interfaces interativas, ideal para dashboards complexos
+- **TypeScript 5+** - Adiciona tipagem estática ao JavaScript, reduzindo bugs e melhorando a manutenibilidade
+- **Next.js 14+** - Framework React com SSR e otimizações automáticas, perfeito para SEO e performance
+- **Tailwind CSS 3+** - Framework CSS utilitário que acelera o desenvolvimento de interfaces responsivas
+- **Axios** - Cliente HTTP confiável para comunicação com a API
+- **React Big Calendar** - Componente especializado em calendários, essencial para o sistema de agendamentos
 
 ### Back-End
-- Python 3.11+
-- Django 5+
-- Django REST Framework (DRF) 3+
-- djangorestframework-simplejwt
+- **Python 3.11+** - Linguagem versátil com excelente ecossistema para desenvolvimento web
+- **Django 5+** - Framework web maduro com admin integrado, ideal para sistemas de gestão
+- **Django REST Framework (DRF) 3+** - Extensão poderosa para criação de APIs RESTful robustas
+- **djangorestframework-simplejwt** - Implementação segura de autenticação JWT para APIs
 
 ### Infraestrutura
-- PostgreSQL 16+
-- Gunicorn + Uvicorn
-- Docker
+- **PostgreSQL 16+** - Banco relacional confiável, ideal para dados estruturados de agendamentos
+- **Gunicorn + Uvicorn** - Servidores WSGI/ASGI para deploy em produção
+- **Docker** - Containerização para ambientes consistentes e deploy simplificado
 
 ## 🏗️ Arquitetura
 
