@@ -111,7 +111,7 @@ export default function FinanceiroPage() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-2xl font-bold text-accent">
                 {formatCurrency(mockFinancialData.totalReceita)}
               </div>
               <p className="text-xs text-muted-foreground">
@@ -126,7 +126,7 @@ export default function FinanceiroPage() {
               <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">
+              <div className="text-2xl font-bold text-destructive">
                 {formatCurrency(mockFinancialData.totalDespesas)}
               </div>
               <p className="text-xs text-muted-foreground">
@@ -141,7 +141,7 @@ export default function FinanceiroPage() {
               <PiggyBank className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">
+              <div className="text-2xl font-bold text-primary">
                 {formatCurrency(mockFinancialData.lucroLiquido)}
               </div>
               <p className="text-xs text-muted-foreground">
@@ -156,7 +156,7 @@ export default function FinanceiroPage() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-2xl font-bold text-accent">
                 +{mockFinancialData.crescimentoMensal}%
               </div>
               <p className="text-xs text-muted-foreground">
@@ -235,7 +235,7 @@ export default function FinanceiroPage() {
                     <div key={transacao.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex items-center space-x-3">
                         <div className={`p-2 rounded-full ${
-                          transacao.tipo === 'receita' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                          transacao.tipo === 'receita' ? 'bg-accent/10 text-accent' : 'bg-destructive/10 text-destructive'
                         }`}>
                           {transacao.tipo === 'receita' ? (
                             <TrendingUp className="h-4 w-4" />
@@ -250,7 +250,7 @@ export default function FinanceiroPage() {
                       </div>
                       <div className="text-right">
                         <p className={`font-medium ${
-                          transacao.tipo === 'receita' ? 'text-green-600' : 'text-red-600'
+                          transacao.tipo === 'receita' ? 'text-accent' : 'text-destructive'
                         }`}>
                           {formatCurrency(Math.abs(transacao.valor))}
                         </p>
@@ -301,7 +301,7 @@ export default function FinanceiroPage() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-sm">Aluguel do Espaço</span>
-                      <span className="text-sm text-red-600">Em 3 dias</span>
+                      <span className="text-sm text-destructive">Em 3 dias</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm">Conta de Internet</span>
@@ -309,7 +309,7 @@ export default function FinanceiroPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm">Seguro dos Equipamentos</span>
-                      <span className="text-sm text-green-600">Em 15 dias</span>
+                      <span className="text-sm text-accent">Em 15 dias</span>
                     </div>
                   </div>
                 </CardContent>

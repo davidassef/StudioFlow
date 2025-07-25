@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    /* StudioFlow Dark Mode Studio Theme */
-    /* Fundo Principal: slate-900 (#111827) */
-    --background: 215 28% 9%;
-    --foreground: 210 20% 98%;
+    /* StudioFlow Yellow & Black Studio Theme */
+    /* Fundo Principal: Preto profundo (#0A0A0A) */
+    --background: 0 0% 4%;
+    --foreground: 60 9% 98%;
     
-    /* Fundo Secundário: slate-800 (#1F2937) */
-    --card: 215 28% 16%;
-    --card-foreground: 210 20% 98%;
-    --popover: 215 28% 16%;
-    --popover-foreground: 210 20% 98%;
+    /* Fundo Secundário: Preto suave (#1A1A1A) */
+    --card: 0 0% 10%;
+    --card-foreground: 60 9% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 60 9% 98%;
     
-    /* Cor de Destaque: Verde Neon (#22C55E) - Vibe "gravando" */
-    --primary: 142 76% 36%;
-    --primary-foreground: 210 20% 98%;
+    /* Cor de Destaque: Amarelo Dourado (#FFD700) - Elegância e sofisticação */
+    --primary: 51 100% 50%;
+    --primary-foreground: 0 0% 4%;
     
-    /* Secundário: slate-700 */
-    --secondary: 215 25% 27%;
-    --secondary-foreground: 210 20% 98%;
+    /* Secundário: Cinza escuro (#2A2A2A) */
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 60 9% 98%;
     
-    /* Muted: slate-600 */
-    --muted: 215 20% 35%;
-    --muted-foreground: 217.9 10.6% 64.9%;
+    /* Muted: Cinza médio (#404040) */
+    --muted: 0 0% 25%;
+    --muted-foreground: 0 0% 65%;
     
-    /* Accent: Laranja Válvula (#F97316) */
-    --accent: 24 95% 53%;
-    --accent-foreground: 210 20% 98%;
+    /* Accent: Amarelo vibrante (#FFC107) */
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 4%;
     
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive-foreground: 60 9% 98%;
     
-    /* Bordas: slate-700 */
-    --border: 215 25% 27%;
-    --input: 215 25% 27%;
-    --ring: 142 76% 36%;
+    /* Bordas: Cinza escuro (#333333) */
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 51 100% 50%;
     --radius: 0.5rem;
     
-    /* Charts com cores vibrantes para o tema studio */
-    --chart-1: 142 76% 36%; /* Verde */
-    --chart-2: 24 95% 53%;  /* Laranja */
-    --chart-3: 217 91% 60%; /* Azul */
-    --chart-4: 262 83% 58%; /* Roxo */
-    --chart-5: 339 82% 52%; /* Rosa */
+    /* Charts com paleta amarelo/dourado para o tema studio */
+    --chart-1: 51 100% 50%; /* Amarelo dourado */
+    --chart-2: 45 100% 51%; /* Amarelo vibrante */
+    --chart-3: 42 100% 70%; /* Amarelo claro */
+    --chart-4: 38 92% 50%;  /* Laranja dourado */
+    --chart-5: 35 91% 65%;  /* Laranja suave */
   }
 }
 

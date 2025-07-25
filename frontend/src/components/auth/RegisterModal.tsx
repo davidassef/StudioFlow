@@ -42,30 +42,38 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: Regi
       return
     }
 
-    if (formData.password.length < 6) {
-      setError('A senha deve ter pelo menos 6 caracteres')
+    if (formData.password.length < 8) {
+      setError('A senha deve ter pelo menos 8 caracteres')
       setIsLoading(false)
       return
     }
 
     try {
-      await register(
-        formData.name,
-        formData.email,
-        formData.password,
-        formData.phone,
-        formData.userType
-      )
-      onClose()
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        phone: '',
-        userType: 'cliente'
-      })
+      const userData = {
+        nome: formData.name,
+        email: formData.email,
+        password: formData.password,
+        password_confirm: formData.confirmPassword,
+        telefone: formData.phone || '',
+        user_type: formData.userType === 'cliente' ? 'CLIENTE' : 'ADMIN'
+      }
+      
+      const result = await register(userData)
+      
+      if (result?.success) {
+        onClose()
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          phone: '',
+          userType: 'cliente'
+        })
+      } else {
+        setError(result?.error || 'Erro ao criar conta')
+      }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error && 'response' in err 
         ? (err as { response?: { data?: { message?: string } } }).response?.data?.message 
@@ -223,9 +231,8 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: Regi
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  required
                   className="w-full pl-10 pr-4 py-3 border border-slate-600 rounded-lg bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
-                  placeholder="(11) 99999-9999"
+                  placeholder="(11) 99999-9999 (opcional)"
                 />
               </div>
             </div>
@@ -244,7 +251,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: Regi
                   onChange={handleInputChange}
                   required
                   className="w-full pl-10 pr-12 py-3 border border-slate-600 rounded-lg bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
-                  placeholder="Mínimo 6 caracteres"
+                  placeholder="Mínimo 8 caracteres"
                 />
                 <button
                   type="button"

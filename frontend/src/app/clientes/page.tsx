@@ -149,7 +149,7 @@ const clientSchema = z.object({
     switch (status) {
       case 'ativo':
         return (
-          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent">
             Ativo
           </div>
         )
@@ -161,7 +161,7 @@ const clientSchema = z.object({
         )
       case 'vip':
         return (
-          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+          <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
             <Star className="h-3 w-3 mr-1" />
             VIP
           </div>
@@ -368,7 +368,7 @@ export default function ClientesPage() {
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Clientes Ativos
               </CardTitle>
-              <TrendingUp className="h-4 w-4 text-green-600" />
+              <TrendingUp className="h-4 w-4 text-accent" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{activeClientes}</div>
@@ -421,7 +421,7 @@ export default function ClientesPage() {
                       className={errors.nome ? 'border-red-500' : ''}
                     />
                     {errors.nome && (
-                      <p className="text-red-500 text-xs mt-1">{errors.nome.message}</p>
+                      <p className="text-destructive text-xs mt-1">{errors.nome.message}</p>
                     )}
                   </div>
                   
@@ -434,7 +434,7 @@ export default function ClientesPage() {
                       className={errors.email ? 'border-red-500' : ''}
                     />
                     {errors.email && (
-                      <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                      <p className="text-destructive text-xs mt-1">{errors.email.message}</p>
                     )}
                   </div>
                   
@@ -446,7 +446,7 @@ export default function ClientesPage() {
                       className={errors.telefone ? 'border-red-500' : ''}
                     />
                     {errors.telefone && (
-                      <p className="text-red-500 text-xs mt-1">{errors.telefone.message}</p>
+                      <p className="text-destructive text-xs mt-1">{errors.telefone.message}</p>
                     )}
                   </div>
                   
@@ -458,7 +458,7 @@ export default function ClientesPage() {
                       className={errors.location ? 'border-red-500' : ''}
                     />
                     {errors.location && (
-                      <p className="text-red-500 text-xs mt-1">{errors.location.message}</p>
+                      <p className="text-destructive text-xs mt-1">{errors.location.message}</p>
                     )}
                   </div>
                   
@@ -606,7 +606,7 @@ export default function ClientesPage() {
                         variant="outline" 
                         size="sm"
                         onClick={() => handleDeleteClient(cliente.id)}
-                        className="text-red-600 hover:text-red-700"
+                        className="text-destructive hover:text-destructive/80"
                       >
                         <Trash2 className="h-3 w-3" />
                       </Button>

@@ -1,6 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import { apiUtils } from '@/lib/api'
 
 export interface User {
   id: string
@@ -44,14 +42,12 @@ interface AuthState {
   isClient: () => boolean
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set, get) => ({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      isLoading: false,
-      error: null,
+const useAuthStore = create<AuthState>((set, get) => ({
+  user: null,
+  token: null,
+  isAuthenticated: false,
+  isLoading: false,
+  error: null,
 
       login: async (email: string, password: string) => {
         set({ isLoading: true, error: null })
@@ -206,18 +202,10 @@ export const useAuthStore = create<AuthState>()(
         const { user } = get()
         return user?.type === 'client'
       },
-    }),
-    {
-      name: 'studioflow-auth',
-      version: 1,
-      partialize: (state) => ({
-        user: state.user,
-        token: state.token,
-        isAuthenticated: state.isAuthenticated,
-      }),
-    }
-  )
-)
+}))
+
+// Exportações
+export { useAuthStore }
 
 // Hook para facilitar o uso
 export const useAuth = () => {

@@ -101,7 +101,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>
-  register: (data: RegisterData | string, email?: string, password?: string, phone?: string, userType?: 'cliente' | 'estudio') => Promise<void>
+  register: (userData: RegisterData) => Promise<{ success: boolean; user?: any; error?: string }>
   logout: () => void
   updateUser: (userData: Partial<User>) => Promise<void>
   requireAuth: (action: string) => boolean
@@ -152,12 +152,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       dispatch({ type: 'LOGIN_START' })
       
-      const response = await api.post('/api/auth/login/', {
+      const response = await api.post('/auth/login/', {
         email,
         password,
       })
 
-      const { access, refresh, user } = response.data
+      const { user, refresh, access } = response.data
 
       // Salvar no localStorage
       localStorage.setItem('token', access)
@@ -181,29 +181,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const register = async (data: RegisterData | string, email?: string, password?: string, phone?: string, userType?: 'cliente' | 'estudio') => {
+  const register = async (userData: RegisterData) => {
     try {
       dispatch({ type: 'LOGIN_START' })
       
-      let userData: RegisterData
-      
-      // Verificar se o primeiro parâmetro é um objeto (novo formato) ou string (formato antigo)
-      if (typeof data === 'object') {
-        userData = data
-      } else {
-        // Formato antigo: register(name, email, password, phone, userType)
-        const mappedUserType = userType === 'cliente' ? 'CLIENTE' : 'PRESTADOR'
-        userData = {
-          nome: data,
-          email: email!,
-          password: password!,
-          password_confirm: password!,
-          telefone: phone || '',
-          user_type: mappedUserType
-        }
-      }
-      
-      const response = await api.post('/api/v1/users/register/', userData)
+      const response = await api.post('/v1/users/register/', userData)
 
       const { access, refresh, user } = response.data
 
@@ -223,9 +205,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           refreshToken: refresh,
         },
       })
-    } catch (error) {
+      
+      return { success: true, user }
+    } catch (error: any) {
       dispatch({ type: 'LOGIN_FAILURE' })
-      throw error
+      
+      let errorMessage = 'Erro ao registrar usuário'
+      
+      if (error.response?.data) {
+        // Capturar mensagens específicas do backend
+        if (error.response.data.password) {
+          errorMessage = error.response.data.password[0] || 'Erro na senha'
+        } else if (error.response.data.email) {
+          errorMessage = error.response.data.email[0] || 'Erro no email'
+        } else if (error.response.data.message) {
+          errorMessage = error.response.data.message
+        } else if (error.response.data.detail) {
+          errorMessage = error.response.data.detail
+        } else if (error.response.data.error) {
+          errorMessage = error.response.data.error
+        }
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      
+      return { success: false, error: errorMessage }
     }
   }
 

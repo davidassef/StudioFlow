@@ -97,7 +97,7 @@ export default function ConfiguracoesPage() {
           
           <div className="flex space-x-2">
             {savedMessage && (
-              <div className="flex items-center space-x-2 text-green-600">
+              <div className="flex items-center space-x-2 text-accent">
                 <CheckCircle className="h-4 w-4" />
                 <span className="text-sm">{savedMessage}</span>
               </div>
@@ -194,19 +194,19 @@ export default function ConfiguracoesPage() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <Wifi className="h-4 w-4 text-green-500" />
+                      <Wifi className="h-4 w-4 text-accent" />
                       <span className="text-sm">Conexão com API</span>
                     </div>
-                    <Badge variant="default" className="bg-green-500">
+                    <Badge variant="default" className="bg-accent">
                       Online
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <Database className="h-4 w-4 text-green-500" />
+                      <Database className="h-4 w-4 text-accent" />
                       <span className="text-sm">Banco de Dados</span>
                     </div>
-                    <Badge variant="default" className="bg-green-500">
+                    <Badge variant="default" className="bg-accent">
                       Conectado
                     </Badge>
                   </div>
@@ -362,7 +362,7 @@ export default function ConfiguracoesPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex items-center space-x-2 text-green-600">
+                    <div className="flex items-center space-x-2 text-accent">
                       <CheckCircle className="h-4 w-4" />
                       <span className="text-sm">Nenhuma atividade suspeita detectada</span>
                     </div>

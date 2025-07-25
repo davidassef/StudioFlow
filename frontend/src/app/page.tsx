@@ -49,25 +49,25 @@ export default function Home() {
       icon: Calendar,
       title: 'Agendamentos Inteligentes',
       description: 'Sistema avançado de reservas com calendário interativo e notificações automáticas.',
-      color: 'text-blue-500'
+      color: 'text-primary'
     },
     {
       icon: Users,
       title: 'Gestão de Clientes',
       description: 'Cadastro completo de clientes com histórico de agendamentos e preferências.',
-      color: 'text-green-500'
+      color: 'text-accent'
     },
     {
       icon: BarChart3,
       title: 'Relatórios Financeiros',
       description: 'Análises detalhadas de receitas, despesas e performance do seu estúdio.',
-      color: 'text-purple-500'
+      color: 'text-primary'
     },
     {
       icon: Settings,
       title: 'Configuração Flexível',
       description: 'Personalize o sistema de acordo com as necessidades do seu estúdio.',
-      color: 'text-orange-500'
+      color: 'text-accent'
     }
   ]
 
@@ -95,7 +95,7 @@ export default function Home() {
           <div className="flex justify-between items-center py-4">
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
+              <div className="bg-gradient-to-r from-primary to-accent p-2 rounded-lg">
                 <Music className="h-6 w-6 text-white" />
               </div>
               <span className="text-2xl font-bold text-white">StudioFlow</span>
@@ -114,7 +114,7 @@ export default function Home() {
               </Link>
               {isAuthenticated ? (
                 <Link href="/dashboard">
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                  <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
                     Dashboard
                   </Button>
                 </Link>
@@ -131,7 +131,7 @@ export default function Home() {
                   </Button>
                   <Button
                     onClick={() => handleAuthAction('register')}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                    className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
                     disabled={isAuthLoading}
                   >
                     <UserPlus className="h-4 w-4 mr-2" />
@@ -165,7 +165,7 @@ export default function Home() {
                 </Link>
                 {isAuthenticated ? (
                   <Link href="/dashboard">
-                    <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                    <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
                       Dashboard
                     </Button>
                   </Link>
@@ -182,7 +182,7 @@ export default function Home() {
                     </Button>
                     <Button
                       onClick={() => handleAuthAction('register')}
-                      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                      className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
                       disabled={isAuthLoading}
                     >
                       <UserPlus className="h-4 w-4 mr-2" />
@@ -200,7 +200,7 @@ export default function Home() {
       <section className="relative py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <div className="mb-8">
-            <Badge className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-blue-300 border-blue-500/30 mb-4">
+            <Badge className="bg-gradient-to-r from-primary/20 to-accent/20 text-primary border-primary/30 mb-4">
               <Zap className="h-3 w-3 mr-1" />
               Sistema Completo de Gestão
             </Badge>
@@ -208,7 +208,7 @@ export default function Home() {
           
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
             Gerencie seu
-            <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent"> Estúdio </span>
+            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"> Estúdio </span>
             com Inteligência
           </h1>
           
@@ -220,7 +220,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             {isAuthenticated ? (
               <Link href="/dashboard">
-                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-lg px-8 py-4">
+                <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-lg px-8 py-4">
                   <Play className="h-5 w-5 mr-2" />
                   Acessar Dashboard
                 </Button>
@@ -229,7 +229,7 @@ export default function Home() {
               <Button
                 size="lg"
                 onClick={() => handleAuthAction('register')}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-lg px-8 py-4"
+                className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-lg px-8 py-4"
                 disabled={isAuthLoading}
               >
                 <Play className="h-5 w-5 mr-2" />
@@ -264,7 +264,7 @@ export default function Home() {
               return (
                 <Card key={index} className="bg-slate-800/50 border-slate-700 text-center">
                   <CardContent className="pt-6">
-                    <IconComponent className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+                    <IconComponent className="h-8 w-8 text-primary mx-auto mb-2" />
                     <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
                     <div className="text-sm text-slate-400">{stat.label}</div>
                   </CardContent>
@@ -324,7 +324,7 @@ export default function Home() {
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
                     <span className="text-slate-300">{benefit}</span>
                   </div>
                 ))}
@@ -333,7 +333,7 @@ export default function Home() {
               <div className="mt-8">
                 {isAuthenticated ? (
                   <Link href="/dashboard">
-                    <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                    <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
                       Ir para Dashboard
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
@@ -341,7 +341,7 @@ export default function Home() {
                 ) : (
                   <Button
                     onClick={() => handleAuthAction('register')}
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                    className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
                     disabled={isAuthLoading}
                   >
                     Experimentar Grátis
@@ -352,20 +352,20 @@ export default function Home() {
             </div>
             
             <div className="relative">
-              <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-2xl p-8 border border-slate-700">
+              <div className="bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl p-8 border border-slate-700">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-slate-800/50 rounded-lg p-4 text-center">
-                    <Clock className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+                    <Clock className="h-8 w-8 text-primary mx-auto mb-2" />
                     <div className="text-sm text-slate-300">Economia de Tempo</div>
                     <div className="text-lg font-bold text-white">70%</div>
                   </div>
                   <div className="bg-slate-800/50 rounded-lg p-4 text-center">
-                    <BarChart3 className="h-8 w-8 text-green-400 mx-auto mb-2" />
+                    <BarChart3 className="h-8 w-8 text-accent mx-auto mb-2" />
                     <div className="text-sm text-slate-300">Aumento de Receita</div>
                     <div className="text-lg font-bold text-white">45%</div>
                   </div>
                   <div className="bg-slate-800/50 rounded-lg p-4 text-center">
-                    <Users className="h-8 w-8 text-purple-400 mx-auto mb-2" />
+                    <Users className="h-8 w-8 text-primary mx-auto mb-2" />
                     <div className="text-sm text-slate-300">Satisfação Cliente</div>
                     <div className="text-lg font-bold text-white">98%</div>
                   </div>
@@ -394,7 +394,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {isAuthenticated ? (
               <Link href="/dashboard">
-                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-lg px-8 py-4">
+                <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-lg px-8 py-4">
                   Acessar Minha Conta
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
@@ -404,7 +404,7 @@ export default function Home() {
                 <Button
                   size="lg"
                   onClick={() => handleAuthAction('register')}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-lg px-8 py-4"
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-lg px-8 py-4"
                   disabled={isAuthLoading}
                 >
                   Começar Teste Grátis
@@ -430,7 +430,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
+              <div className="bg-gradient-to-r from-primary to-accent p-2 rounded-lg">
                 <Music className="h-6 w-6 text-white" />
               </div>
               <span className="text-2xl font-bold text-white">StudioFlow</span>
