@@ -50,16 +50,7 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(() => '/')
 }))
 
-// Mock do Zustand
-jest.mock('zustand', () => ({
-  create: jest.fn((fn) => {
-    if (typeof fn === 'function') {
-      const store = fn(() => ({}), () => ({}), () => ({}))
-      return () => store
-    }
-    return () => ({})
-  })
-}))
+// Zustand funciona normalmente nos testes
 
 // Mock da API de geolocalização
 Object.defineProperty(global.navigator, 'geolocation', {
