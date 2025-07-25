@@ -516,4 +516,4 @@ Em desenvolvimento:
 - **GitHub**: [Criar issue](https://github.com/seu-usuario/studioflow/issues/new)
 - **Documentação**: [docs.studioflow.com](https://docs.studioflow.com)
 
-**Última atualização**: Janeiro 2024
+**Última atualização**: Julho 2025
