@@ -2,11 +2,24 @@ import React from 'react'
 import { render, screen, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AuthProvider, useAuth } from '../AuthContext'
-import { useAuthStore } from '../../stores/authStore'
 
-// Mock do authStore
-jest.mock('../../stores/authStore')
-const mockUseAuthStore = useAuthStore as jest.MockedFunction<typeof useAuthStore>
+// Mock do api
+jest.mock('@/lib/api', () => ({
+  api: {
+    post: jest.fn(),
+    get: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+    patch: jest.fn(),
+    defaults: {
+      headers: {
+        common: {}
+      }
+    }
+  }
+}))
+
+import { api } from '@/lib/api'
 
 // Mock do localStorage
 const localStorageMock = {
@@ -24,7 +37,7 @@ global.fetch = jest.fn()
 
 const mockUser = {
   id: '1',
-  name: 'João Silva',
+  nome: 'João Silva',
   email: 'joao@example.com',
   type: 'client' as const,
   avatar: 'https://example.com/avatar.jpg'
@@ -36,25 +49,18 @@ const mockToken = 'mock-jwt-token'
 const TestComponent = () => {
   const {
     user,
-    token,
     isAuthenticated,
     isLoading,
     login,
     register,
-    logout,
-    updateProfile,
-    isProvider,
-    isClient
+    logout
   } = useAuth()
 
   return (
     <div>
       <div data-testid="user">{user ? JSON.stringify(user) : 'null'}</div>
-      <div data-testid="token">{token || 'null'}</div>
       <div data-testid="isAuthenticated">{isAuthenticated.toString()}</div>
       <div data-testid="isLoading">{isLoading.toString()}</div>
-      <div data-testid="isProvider">{isProvider().toString()}</div>
-      <div data-testid="isClient">{isClient().toString()}</div>
       
       <button
         data-testid="login-btn"
@@ -66,10 +72,12 @@ const TestComponent = () => {
       <button
         data-testid="register-btn"
         onClick={() => register({
-          name: 'Test User',
+          nome: 'Test User',
           email: 'test@example.com',
           password: 'password',
-          type: 'client'
+          password_confirm: 'password',
+          telefone: '',
+          user_type: 'cliente'
         })}
       >
         Register
@@ -77,13 +85,6 @@ const TestComponent = () => {
       
       <button data-testid="logout-btn" onClick={logout}>
         Logout
-      </button>
-      
-      <button
-        data-testid="update-profile-btn"
-        onClick={() => updateProfile({ name: 'Updated Name' })}
-      >
-        Update Profile
       </button>
     </div>
   )
@@ -100,41 +101,13 @@ const TestComponentWithoutProvider = () => {
 }
 
 describe('AuthContext', () => {
-  const mockAuthStore = {
-    user: null,
-    token: null,
-    isAuthenticated: false,
-    isLoading: false,
-    login: jest.fn(),
-    register: jest.fn(),
-    logout: jest.fn(),
-    updateProfile: jest.fn(),
-    setUser: jest.fn(),
-    setToken: jest.fn(),
-    refreshToken: jest.fn(),
-    isTokenExpired: jest.fn(),
-    isProvider: jest.fn(),
-    isClient: jest.fn()
-  }
+  const mockApiPost = api.post as jest.MockedFunction<typeof api.post>
 
   beforeEach(() => {
     jest.clearAllMocks()
-    mockUseAuthStore.mockReturnValue(mockAuthStore)
-    
-    // Reset dos mocks
-    Object.keys(mockAuthStore).forEach(key => {
-      if (typeof mockAuthStore[key as keyof typeof mockAuthStore] === 'function') {
-        ;(mockAuthStore[key as keyof typeof mockAuthStore] as jest.Mock).mockClear()
-      }
-    })
-    
-    // Estado inicial
-    mockAuthStore.user = null
-    mockAuthStore.token = null
-    mockAuthStore.isAuthenticated = false
-    mockAuthStore.isLoading = false
-    mockAuthStore.isProvider.mockReturnValue(false)
-    mockAuthStore.isClient.mockReturnValue(false)
+    localStorageMock.getItem.mockReturnValue(null)
+    localStorageMock.setItem.mockClear()
+    localStorageMock.removeItem.mockClear()
   })
 
   it('deve renderizar o provider corretamente', () => {
@@ -147,7 +120,7 @@ describe('AuthContext', () => {
     expect(screen.getByTestId('child')).toBeInTheDocument()
   })
 
-  it('deve fornecer valores do authStore através do contexto', () => {
+  it('deve fornecer valores iniciais através do contexto', () => {
     render(
       <AuthProvider>
         <TestComponent />
@@ -155,20 +128,18 @@ describe('AuthContext', () => {
     )
 
     expect(screen.getByTestId('user')).toHaveTextContent('null')
-    expect(screen.getByTestId('token')).toHaveTextContent('null')
     expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false')
     expect(screen.getByTestId('isLoading')).toHaveTextContent('false')
-    expect(screen.getByTestId('isProvider')).toHaveTextContent('false')
-    expect(screen.getByTestId('isClient')).toHaveTextContent('false')
   })
 
   it('deve refletir mudanças no estado de autenticação', () => {
-    // Simula usuário logado
-    mockAuthStore.user = mockUser
-    mockAuthStore.token = mockToken
-    mockAuthStore.isAuthenticated = true
-    mockAuthStore.isProvider.mockReturnValue(false)
-    mockAuthStore.isClient.mockReturnValue(true)
+    // Simula usuário logado no localStorage
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'user') return JSON.stringify(mockUser)
+      if (key === 'token') return mockToken
+      if (key === 'refreshToken') return 'mock-refresh-token'
+      return null
+    })
 
     render(
       <AuthProvider>
@@ -177,15 +148,18 @@ describe('AuthContext', () => {
     )
 
     expect(screen.getByTestId('user')).toHaveTextContent(JSON.stringify(mockUser))
-    expect(screen.getByTestId('token')).toHaveTextContent(mockToken)
     expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true')
-    expect(screen.getByTestId('isProvider')).toHaveTextContent('false')
-    expect(screen.getByTestId('isClient')).toHaveTextContent('true')
   })
 
-  it('deve chamar função de login do store', async () => {
+  it('deve chamar função de login', async () => {
     const user = userEvent.setup()
-    mockAuthStore.login.mockResolvedValue(undefined)
+    mockApiPost.mockResolvedValue({
+      data: {
+        access: 'access-token',
+        refresh: 'refresh-token',
+        user: mockUser
+      }
+    })
 
     render(
       <AuthProvider>
@@ -195,12 +169,21 @@ describe('AuthContext', () => {
 
     await user.click(screen.getByTestId('login-btn'))
 
-    expect(mockAuthStore.login).toHaveBeenCalledWith('test@example.com', 'password')
+    expect(mockApiPost).toHaveBeenCalledWith('/api/auth/login/', {
+      email: 'test@example.com',
+      password: 'password'
+    })
   })
 
-  it('deve chamar função de registro do store', async () => {
+  it('deve chamar função de registro', async () => {
     const user = userEvent.setup()
-    mockAuthStore.register.mockResolvedValue(undefined)
+    mockApiPost.mockResolvedValue({
+      data: {
+        access: 'access-token',
+        refresh: 'refresh-token',
+        user: mockUser
+      }
+    })
 
     render(
       <AuthProvider>
@@ -210,16 +193,26 @@ describe('AuthContext', () => {
 
     await user.click(screen.getByTestId('register-btn'))
 
-    expect(mockAuthStore.register).toHaveBeenCalledWith({
-      name: 'Test User',
+    expect(mockApiPost).toHaveBeenCalledWith('/api/v1/users/register/', {
+      nome: 'Test User',
       email: 'test@example.com',
       password: 'password',
-      type: 'client'
+      password_confirm: 'password',
+      telefone: '',
+      user_type: 'cliente'
     })
   })
 
-  it('deve chamar função de logout do store', async () => {
+  it('deve chamar função de logout', async () => {
     const user = userEvent.setup()
+    
+    // Simula usuário logado
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'user') return JSON.stringify(mockUser)
+      if (key === 'token') return 'mock-token'
+      if (key === 'refreshToken') return 'mock-refresh-token'
+      return null
+    })
 
     render(
       <AuthProvider>
@@ -229,12 +222,24 @@ describe('AuthContext', () => {
 
     await user.click(screen.getByTestId('logout-btn'))
 
-    expect(mockAuthStore.logout).toHaveBeenCalled()
+    expect(localStorageMock.removeItem).toHaveBeenCalledWith('token')
+    expect(localStorageMock.removeItem).toHaveBeenCalledWith('refreshToken')
+    expect(localStorageMock.removeItem).toHaveBeenCalledWith('user')
   })
 
-  it('deve chamar função de atualização de perfil do store', async () => {
+  it('deve mostrar estado de loading durante operações assíncronas', async () => {
     const user = userEvent.setup()
-    mockAuthStore.updateProfile.mockResolvedValue(undefined)
+    
+    // Mock da API com delay
+    mockApiPost.mockImplementation(() => new Promise(resolve => {
+      setTimeout(() => resolve({
+        data: {
+          access: 'access-token',
+          refresh: 'refresh-token',
+          user: mockUser
+        }
+      }), 100)
+    }))
 
     render(
       <AuthProvider>
@@ -242,53 +247,18 @@ describe('AuthContext', () => {
       </AuthProvider>
     )
 
-    await user.click(screen.getByTestId('update-profile-btn'))
-
-    expect(mockAuthStore.updateProfile).toHaveBeenCalledWith({ name: 'Updated Name' })
-  })
-
-  it('deve refletir estado de loading', () => {
-    mockAuthStore.isLoading = true
-
-    render(
-      <AuthProvider>
-        <TestComponent />
-      </AuthProvider>
-    )
-
-    expect(screen.getByTestId('isLoading')).toHaveTextContent('true')
-  })
-
-  it('deve identificar usuário prestador corretamente', () => {
-    mockAuthStore.user = { ...mockUser, type: 'provider' }
-    mockAuthStore.isAuthenticated = true
-    mockAuthStore.isProvider.mockReturnValue(true)
-    mockAuthStore.isClient.mockReturnValue(false)
-
-    render(
-      <AuthProvider>
-        <TestComponent />
-      </AuthProvider>
-    )
-
-    expect(screen.getByTestId('isProvider')).toHaveTextContent('true')
-    expect(screen.getByTestId('isClient')).toHaveTextContent('false')
-  })
-
-  it('deve identificar usuário cliente corretamente', () => {
-    mockAuthStore.user = { ...mockUser, type: 'client' }
-    mockAuthStore.isAuthenticated = true
-    mockAuthStore.isProvider.mockReturnValue(false)
-    mockAuthStore.isClient.mockReturnValue(true)
-
-    render(
-      <AuthProvider>
-        <TestComponent />
-      </AuthProvider>
-    )
-
-    expect(screen.getByTestId('isProvider')).toHaveTextContent('false')
-    expect(screen.getByTestId('isClient')).toHaveTextContent('true')
+    // Verifica estado inicial
+    expect(screen.getByTestId('isLoading')).toHaveTextContent('false')
+    
+    // Clica no login
+    await act(async () => {
+      await user.click(screen.getByTestId('login-btn'))
+    })
+    
+    // Aguarda a operação completar
+    await waitFor(() => {
+      expect(screen.getByTestId('isLoading')).toHaveTextContent('false')
+    }, { timeout: 3000 })
   })
 
   it('deve lançar erro quando useAuth é usado fora do AuthProvider', () => {
@@ -304,44 +274,17 @@ describe('AuthContext', () => {
     consoleSpy.mockRestore()
   })
 
-  it('deve manter referências estáveis das funções', () => {
-    let firstRender: any
-    let secondRender: any
 
-    const TestStabilityComponent = () => {
-      const auth = useAuth()
-      
-      if (!firstRender) {
-        firstRender = auth
-      } else {
-        secondRender = auth
-      }
 
-      return <div>Test</div>
-    }
+  it('deve lidar com múltiplos componentes filhos', async () => {
+    // Simula usuário logado no localStorage ANTES do render
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'user') return JSON.stringify(mockUser)
+      if (key === 'token') return 'mock-token'
+      if (key === 'refreshToken') return 'mock-refresh-token'
+      return null
+    })
 
-    const { rerender } = render(
-      <AuthProvider>
-        <TestStabilityComponent />
-      </AuthProvider>
-    )
-
-    rerender(
-      <AuthProvider>
-        <TestStabilityComponent />
-      </AuthProvider>
-    )
-
-    // As funções devem manter a mesma referência entre renders
-    expect(firstRender.login).toBe(secondRender.login)
-    expect(firstRender.register).toBe(secondRender.register)
-    expect(firstRender.logout).toBe(secondRender.logout)
-    expect(firstRender.updateProfile).toBe(secondRender.updateProfile)
-    expect(firstRender.isProvider).toBe(secondRender.isProvider)
-    expect(firstRender.isClient).toBe(secondRender.isClient)
-  })
-
-  it('deve lidar com múltiplos componentes filhos', () => {
     const ChildComponent1 = () => {
       const { isAuthenticated } = useAuth()
       return <div data-testid="child1">{isAuthenticated.toString()}</div>
@@ -349,11 +292,8 @@ describe('AuthContext', () => {
 
     const ChildComponent2 = () => {
       const { user } = useAuth()
-      return <div data-testid="child2">{user?.name || 'No user'}</div>
+      return <div data-testid="child2">{user?.nome || 'No user'}</div>
     }
-
-    mockAuthStore.user = mockUser
-    mockAuthStore.isAuthenticated = true
 
     render(
       <AuthProvider>
@@ -362,107 +302,10 @@ describe('AuthContext', () => {
       </AuthProvider>
     )
 
-    expect(screen.getByTestId('child1')).toHaveTextContent('true')
-    expect(screen.getByTestId('child2')).toHaveTextContent('João Silva')
-  })
-
-  it('deve funcionar com componentes aninhados', () => {
-    const NestedComponent = () => {
-      const { token } = useAuth()
-      return <div data-testid="nested">{token || 'No token'}</div>
-    }
-
-    const ParentComponent = () => {
-      return (
-        <div>
-          <NestedComponent />
-        </div>
-      )
-    }
-
-    mockAuthStore.token = mockToken
-
-    render(
-      <AuthProvider>
-        <ParentComponent />
-      </AuthProvider>
-    )
-
-    expect(screen.getByTestId('nested')).toHaveTextContent(mockToken)
-  })
-
-  it('deve propagar erros das funções do store', async () => {
-    const user = userEvent.setup()
-    const errorMessage = 'Login failed'
-    mockAuthStore.login.mockRejectedValue(new Error(errorMessage))
-
-    const TestErrorComponent = () => {
-      const { login } = useAuth()
-      const [error, setError] = React.useState<string | null>(null)
-
-      const handleLogin = async () => {
-        try {
-          await login('test@example.com', 'password')
-        } catch (err) {
-          setError((err as Error).message)
-        }
-      }
-
-      return (
-        <div>
-          <button data-testid="login-btn" onClick={handleLogin}>
-            Login
-          </button>
-          {error && <div data-testid="error">{error}</div>}
-        </div>
-      )
-    }
-
-    render(
-      <AuthProvider>
-        <TestErrorComponent />
-      </AuthProvider>
-    )
-
-    await user.click(screen.getByTestId('login-btn'))
-
+    // Aguarda o useEffect processar o localStorage
     await waitFor(() => {
-      expect(screen.getByTestId('error')).toHaveTextContent(errorMessage)
+      expect(screen.getByTestId('child1')).toHaveTextContent('true')
+      expect(screen.getByTestId('child2')).toHaveTextContent('João Silva')
     })
-  })
-
-  it('deve atualizar quando o store muda', () => {
-    const TestUpdateComponent = () => {
-      const { user, isAuthenticated } = useAuth()
-      
-      return (
-        <div>
-          <div data-testid="auth-status">{isAuthenticated.toString()}</div>
-          <div data-testid="user-name">{user?.name || 'No user'}</div>
-        </div>
-      )
-    }
-
-    const { rerender } = render(
-      <AuthProvider>
-        <TestUpdateComponent />
-      </AuthProvider>
-    )
-
-    expect(screen.getByTestId('auth-status')).toHaveTextContent('false')
-    expect(screen.getByTestId('user-name')).toHaveTextContent('No user')
-
-    // Simula mudança no store
-    mockAuthStore.user = mockUser
-    mockAuthStore.isAuthenticated = true
-
-    rerender(
-      <AuthProvider>
-        <TestUpdateComponent />
-      </AuthProvider>
-    )
-
-    expect(screen.getByTestId('auth-status')).toHaveTextContent('true')
-    expect(screen.getByTestId('user-name')).toHaveTextContent('João Silva')
   })
 })

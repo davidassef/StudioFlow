@@ -15,16 +15,35 @@ Object.defineProperty(global.navigator, 'geolocation', {
   writable: true
 })
 
+// Mock do localStorage
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn()
+}
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+  writable: true
+})
+
 describe('LocationService', () => {
+  const mockOnLocationUpdate = jest.fn()
+  const mockOnLocationError = jest.fn()
+
   beforeEach(() => {
     jest.clearAllMocks()
     mockGeolocation.getCurrentPosition.mockClear()
+    localStorageMock.getItem.mockReturnValue(null)
+    localStorageMock.setItem.mockClear()
+    mockOnLocationUpdate.mockClear()
+    mockOnLocationError.mockClear()
   })
 
   it('deve renderizar o componente corretamente', () => {
-    render(<LocationService />)
+    render(<LocationService onLocationUpdate={mockOnLocationUpdate} />)
     
-    expect(screen.getByText(/localização/i)).toBeInTheDocument()
+    expect(screen.getByText('Localização')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /obter localização/i })).toBeInTheDocument()
   })
 
@@ -35,17 +54,24 @@ describe('LocationService', () => {
           latitude: -23.5505,
           longitude: -46.6333,
           accuracy: 100
-        }
+        },
+        timestamp: Date.now()
       })
     })
 
-    render(<LocationService />)
+    render(<LocationService onLocationUpdate={mockOnLocationUpdate} />)
     
     const button = screen.getByRole('button', { name: /obter localização/i })
     fireEvent.click(button)
     
     await waitFor(() => {
       expect(mockGeolocation.getCurrentPosition).toHaveBeenCalled()
+      expect(mockOnLocationUpdate).toHaveBeenCalledWith({
+        latitude: -23.5505,
+        longitude: -46.6333,
+        accuracy: 100,
+        timestamp: expect.any(Number)
+      })
     })
   })
 
@@ -56,18 +82,20 @@ describe('LocationService', () => {
           latitude: -23.5505,
           longitude: -46.6333,
           accuracy: 100
-        }
+        },
+        timestamp: Date.now()
       })
     })
 
-    render(<LocationService />)
+    render(<LocationService onLocationUpdate={mockOnLocationUpdate} />)
     
     const button = screen.getByRole('button', { name: /obter localização/i })
     fireEvent.click(button)
     
     await waitFor(() => {
-      expect(screen.getByText(/-23.5505, -46.6333/)).toBeInTheDocument()
-      expect(screen.getByText(/precisão: 100m/i)).toBeInTheDocument()
+      expect(screen.getByText('-23.550500, -46.633300')).toBeInTheDocument()
+      expect(screen.getByText(/precisão: ~100m/i)).toBeInTheDocument()
+      expect(screen.getByText('Localização obtida')).toBeInTheDocument()
     })
   })
 
@@ -75,17 +103,19 @@ describe('LocationService', () => {
     mockGeolocation.getCurrentPosition.mockImplementation((success, error) => {
       error({
         code: 1,
-        message: 'User denied the request for Geolocation.'
+        message: 'User denied the request for Geolocation.',
+        PERMISSION_DENIED: 1
       })
     })
 
-    render(<LocationService />)
+    render(<LocationService onLocationUpdate={mockOnLocationUpdate} onLocationError={mockOnLocationError} />)
     
     const button = screen.getByRole('button', { name: /obter localização/i })
     fireEvent.click(button)
     
     await waitFor(() => {
-      expect(screen.getByText(/permissão negada/i)).toBeInTheDocument()
+      expect(screen.getByText(/permissão de localização negada/i)).toBeInTheDocument()
+      expect(mockOnLocationError).toHaveBeenCalledWith('Permissão de localização negada pelo usuário')
     })
   })
 
@@ -93,17 +123,19 @@ describe('LocationService', () => {
     mockGeolocation.getCurrentPosition.mockImplementation((success, error) => {
       error({
         code: 2,
-        message: 'Position unavailable.'
+        message: 'Position unavailable.',
+        POSITION_UNAVAILABLE: 2
       })
     })
 
-    render(<LocationService />)
+    render(<LocationService onLocationUpdate={mockOnLocationUpdate} onLocationError={mockOnLocationError} />)
     
     const button = screen.getByRole('button', { name: /obter localização/i })
     fireEvent.click(button)
     
     await waitFor(() => {
-      expect(screen.getByText(/localização indisponível/i)).toBeInTheDocument()
+      expect(screen.getByText(/informações de localização não disponíveis/i)).toBeInTheDocument()
+      expect(mockOnLocationError).toHaveBeenCalledWith('Informações de localização não disponíveis')
     })
   })
 
@@ -111,17 +143,19 @@ describe('LocationService', () => {
     mockGeolocation.getCurrentPosition.mockImplementation((success, error) => {
       error({
         code: 3,
-        message: 'Timeout expired.'
+        message: 'Timeout expired.',
+        TIMEOUT: 3
       })
     })
 
-    render(<LocationService />)
+    render(<LocationService onLocationUpdate={mockOnLocationUpdate} onLocationError={mockOnLocationError} />)
     
     const button = screen.getByRole('button', { name: /obter localização/i })
     fireEvent.click(button)
     
     await waitFor(() => {
-      expect(screen.getByText(/tempo esgotado/i)).toBeInTheDocument()
+      expect(screen.getByText(/tempo limite para obter localização excedido/i)).toBeInTheDocument()
+      expect(mockOnLocationError).toHaveBeenCalledWith('Tempo limite para obter localização excedido')
     })
   })
 
@@ -130,43 +164,36 @@ describe('LocationService', () => {
       // Não chama nem success nem error para simular carregamento
     })
 
-    render(<LocationService />)
+    render(<LocationService onLocationUpdate={mockOnLocationUpdate} />)
     
     const button = screen.getByRole('button', { name: /obter localização/i })
     fireEvent.click(button)
     
-    expect(screen.getByText(/obtendo localização/i)).toBeInTheDocument()
+    expect(screen.getByText('Obtendo localização...')).toBeInTheDocument()
     expect(button).toBeDisabled()
   })
 
-  it('deve permitir limpar a localização', async () => {
+  it('deve mostrar botão de atualizar quando localização for obtida', async () => {
     mockGeolocation.getCurrentPosition.mockImplementation((success) => {
       success({
         coords: {
           latitude: -23.5505,
           longitude: -46.6333,
           accuracy: 100
-        }
+        },
+        timestamp: Date.now()
       })
     })
 
-    render(<LocationService />)
+    render(<LocationService onLocationUpdate={mockOnLocationUpdate} />)
     
     // Obtém localização primeiro
     const getLocationButton = screen.getByRole('button', { name: /obter localização/i })
     fireEvent.click(getLocationButton)
     
     await waitFor(() => {
-      expect(screen.getByText(/-23.5505, -46.6333/)).toBeInTheDocument()
-    })
-    
-    // Limpa localização
-    const clearButton = screen.getByRole('button', { name: /limpar localização/i })
-    fireEvent.click(clearButton)
-    
-    await waitFor(() => {
-      expect(screen.queryByText(/-23.5505, -46.6333/)).not.toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /obter localização/i })).toBeInTheDocument()
+      expect(screen.getByText('-23.550500, -46.633300')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /atualizar localização/i })).toBeInTheDocument()
     })
   })
 })
@@ -187,30 +214,34 @@ describe('useLocationService hook', () => {
   })
 
   it('deve obter localização com sucesso', async () => {
+    const mockTimestamp = Date.now()
     mockGeolocation.getCurrentPosition.mockImplementation((success) => {
       success({
         coords: {
           latitude: -23.5505,
           longitude: -46.6333,
           accuracy: 100
-        }
+        },
+        timestamp: mockTimestamp
       })
     })
 
     const { result } = renderHook(() => useLocationService())
     
     await act(async () => {
-      result.current.getCurrentLocation()
+      await result.current.getCurrentLocation()
     })
     
     await waitFor(() => {
       expect(result.current.location).toEqual({
         latitude: -23.5505,
         longitude: -46.6333,
-        accuracy: 100
+        accuracy: 100,
+        timestamp: mockTimestamp
       })
       expect(result.current.loading).toBe(false)
       expect(result.current.error).toBeNull()
+      expect(result.current.permission).toBe('granted')
     })
   })
 
@@ -218,21 +249,26 @@ describe('useLocationService hook', () => {
     mockGeolocation.getCurrentPosition.mockImplementation((success, error) => {
       error({
         code: 1,
-        message: 'User denied the request for Geolocation.'
+        message: 'User denied the request for Geolocation.',
+        PERMISSION_DENIED: 1
       })
     })
 
     const { result } = renderHook(() => useLocationService())
     
     await act(async () => {
-      result.current.getCurrentLocation()
+      try {
+        await result.current.getCurrentLocation()
+      } catch (e) {
+        // Esperado que rejeite
+      }
     })
     
     await waitFor(() => {
       expect(result.current.location).toBeNull()
       expect(result.current.loading).toBe(false)
-      expect(result.current.error).toBe('Erro desconhecido ao obter localização')
-      expect(result.current.permission).toBe('prompt')
+      expect(result.current.error).toBe('Permissão de localização negada')
+      expect(result.current.permission).toBe('denied')
     })
   })
 
@@ -259,13 +295,15 @@ describe('useLocationService hook', () => {
   })
 
   it('deve limpar localização', async () => {
+    const mockTimestamp = Date.now()
     mockGeolocation.getCurrentPosition.mockImplementation((success) => {
       success({
         coords: {
           latitude: -23.5505,
           longitude: -46.6333,
           accuracy: 100
-        }
+        },
+        timestamp: mockTimestamp
       })
     })
 
@@ -273,7 +311,7 @@ describe('useLocationService hook', () => {
     
     // Obtém localização primeiro
     await act(async () => {
-      result.current.getCurrentLocation()
+      await result.current.getCurrentLocation()
     })
     
     await waitFor(() => {
@@ -287,6 +325,7 @@ describe('useLocationService hook', () => {
     
     expect(result.current.location).toBeNull()
     expect(result.current.error).toBeNull()
+    expect(result.current.loading).toBe(false)
   })
 
   it('deve verificar se geolocalização é suportada', () => {
