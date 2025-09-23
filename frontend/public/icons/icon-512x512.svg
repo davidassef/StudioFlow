@@ -1,0 +1,38 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg-gradient-512" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#3b82f6"/>
+        <stop offset="100%" style="stop-color:#8b5cf6"/>
+      </linearGradient>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="512" height="512" fill="url(#bg-gradient-512)" rx="51.2"/>
+    
+    <!-- Icon content -->
+    
+      <!-- Nota musical principal -->
+      <rect x="276" y="196" width="4" height="80" fill="#ffffff" rx="2"/>
+      <ellipse cx="272" cy="276" rx="10" ry="6" fill="#ffffff"/>
+      
+      <!-- Segunda nota -->
+      <rect x="232" y="216" width="4" height="60" fill="#ffffff" rx="2"/>
+      <ellipse cx="228" cy="276" rx="10" ry="6" fill="#ffffff"/>
+      
+      <!-- Conexão entre notas -->
+      <path d="M 236 216 L 280 196 L 280 206 L 236 226 Z" fill="#ffffff"/>
+      
+      <!-- Ondas sonoras -->
+      <g opacity="0.8">
+        <path d="M 216 246 Q 226 241 236 246 Q 246 251 256 246" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+        <path d="M 216 256 Q 226 251 236 256 Q 246 261 256 256" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+        <path d="M 216 266 Q 226 261 236 266 Q 246 271 256 266" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+      </g>
+    
+    
+    <!-- Subtle border -->
+    <rect width="512" height="512" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" rx="51.2"/>
+  </svg>

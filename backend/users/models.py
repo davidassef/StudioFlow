@@ -43,6 +43,7 @@ class User(AbstractUser):
     class UserType(models.TextChoices):
         ADMIN = 'ADMIN', _('Admin')
         CLIENTE = 'CLIENTE', _('Cliente')
+        PRESTADOR = 'PRESTADOR', _('Prestador')
     
     username = None
     email = models.EmailField(_('email address'), unique=True)

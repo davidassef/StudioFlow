@@ -15,7 +15,8 @@ import {
   Eye,
   Navigation,
 } from 'lucide-react';
-import { Studio, useFavoritesStore } from '@/stores/favoritesStore';
+import { Studio } from '@/types/studio';
+import { useFavoritesStore } from '@/stores/favoritesStore';
 
 interface StudioCardProps {
   studio: Studio;
@@ -30,6 +31,23 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
 
   const isStudioFavorite = isFavorite(studio.id);
 
+  // Adaptador para compatibilidade entre diferentes interfaces Studio
+  const adaptedStudio = {
+    id: studio.id,
+    name: studio.nome || studio.name || '',
+    description: studio.descricao || studio.description || '',
+    location: studio.endereco ? `${studio.cidade}, ${studio.estado}` : studio.location || '',
+    pricePerHour: studio.preco_hora || studio.pricePerHour || 0,
+    rating: studio.avaliacao || studio.rating || 0,
+    images: studio.fotos || studio.images || [],
+    equipment: studio.equipamentos || studio.equipment || [],
+    capacity: studio.capacidade || studio.capacity || 0,
+    studioType: studio.tipo_estudio || studio.studioType || '',
+    availability: studio.is_disponivel !== undefined ? studio.is_disponivel : studio.availability || false,
+    distance: studio.distancia,
+    profileImage: studio.foto_perfil
+  };
+
   const handleFavoriteToggle = () => {
     if (isStudioFavorite) {
       removeFromFavorites(studio.id);
@@ -42,6 +60,7 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
+        data-testid="star-icon"
         className={`h-4 w-4 ${
           i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
         }`}
@@ -50,8 +69,11 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
   };
 
   const getImageSrc = () => {
-    if (studio.images && studio.images.length > 0) {
-      return studio.images[0];
+    if (adaptedStudio.profileImage) {
+      return adaptedStudio.profileImage;
+    }
+    if (adaptedStudio.images && adaptedStudio.images.length > 0) {
+      return adaptedStudio.images[0];
     }
     // Fallback para imagem gerada
     return `https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20music%20studio%20interior%20with%20modern%20equipment%20dark%20theme&image_size=landscape_4_3`;
@@ -65,7 +87,7 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
           {!imageError ? (
             <Image
               src={getImageSrc()}
-              alt={studio.name}
+              alt={adaptedStudio.name}
               fill
               className={`object-cover transition-all duration-300 group-hover:scale-105 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
@@ -100,13 +122,13 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
           <div className="absolute top-2 left-2">
             <span
               className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                studio.availability
+                adaptedStudio.availability
                   ? 'bg-green-500/90 text-white'
                   : 'bg-red-500/90 text-white'
               }`}
             >
               <Clock className="h-3 w-3 mr-1" />
-              {studio.availability ? 'Disponível' : 'Ocupado'}
+              {adaptedStudio.availability ? 'Disponível' : 'Ocupado'}
             </span>
           </div>
 
@@ -114,7 +136,7 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
           <div className="absolute bottom-2 left-2">
             <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/90 text-white">
               <Music className="h-3 w-3 mr-1" />
-              {studio.studioType}
+              {adaptedStudio.studioType}
             </span>
           </div>
         </div>
@@ -124,18 +146,18 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
         {/* Nome e Avaliação */}
         <div className="space-y-2">
           <h3 className="text-lg font-semibold text-foreground line-clamp-1">
-            {studio.name}
+            {adaptedStudio.name}
           </h3>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1">
-              {renderStars(studio.rating)}
+              {renderStars(adaptedStudio.rating)}
               <span className="text-sm text-muted-foreground ml-1">
-                ({studio.rating}.0)
+                ({adaptedStudio.rating})
               </span>
             </div>
             <div className="flex items-center text-sm text-muted-foreground">
               <Users className="h-4 w-4 mr-1" />
-              {studio.capacity} pessoas
+              {adaptedStudio.capacity} pessoas
             </div>
           </div>
         </div>
@@ -144,27 +166,27 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center">
             <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-            <span className="line-clamp-1">{studio.location}</span>
+            <span className="line-clamp-1">{adaptedStudio.location}</span>
           </div>
-          {studio.distance && (
+          {adaptedStudio.distance && (
             <div className="flex items-center gap-1">
               <Navigation className="h-3 w-3" />
-              <span>{studio.distance} km</span>
+              <span>{adaptedStudio.distance} km</span>
             </div>
           )}
         </div>
 
         {/* Descrição */}
         <p className="text-sm text-muted-foreground line-clamp-2">
-          {studio.description}
+          {adaptedStudio.description}
         </p>
 
         {/* Equipamentos */}
-        {studio.equipment && studio.equipment.length > 0 && (
+        {adaptedStudio.equipment && adaptedStudio.equipment.length > 0 && (
           <div className="space-y-1">
             <span className="text-xs font-medium text-muted-foreground">Equipamentos:</span>
             <div className="flex flex-wrap gap-1">
-              {studio.equipment.slice(0, 3).map((eq, index) => (
+              {adaptedStudio.equipment.slice(0, 3).map((eq, index) => (
                 <span
                   key={index}
                   className="inline-flex items-center px-2 py-1 rounded text-xs bg-muted text-muted-foreground"
@@ -172,9 +194,9 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
                   {eq}
                 </span>
               ))}
-              {studio.equipment.length > 3 && (
+              {adaptedStudio.equipment.length > 3 && (
                 <span className="inline-flex items-center px-2 py-1 rounded text-xs bg-muted text-muted-foreground">
-                  +{studio.equipment.length - 3} mais
+                  +{adaptedStudio.equipment.length - 3} mais
                 </span>
               )}
             </div>
@@ -186,7 +208,7 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
           <div className="flex items-center space-x-1">
             <DollarSign className="h-4 w-4 text-primary" />
             <span className="text-lg font-bold text-primary">
-              R$ {studio.pricePerHour}
+              R$ {Math.round(adaptedStudio.pricePerHour)}
             </span>
             <span className="text-sm text-muted-foreground">/hora</span>
           </div>
@@ -203,9 +225,9 @@ export function StudioCard({ studio, onViewDetails, onBook }: StudioCardProps) {
             <Button
               size="sm"
               onClick={() => onBook(studio)}
-              disabled={!studio.availability}
+              disabled={!adaptedStudio.availability}
             >
-              {studio.availability ? 'Agendar' : 'Indisponível'}
+              {adaptedStudio.availability ? 'Agendar' : 'Indisponível'}
             </Button>
           </div>
         </div>

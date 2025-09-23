@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,7 +36,7 @@ const studioRegistrationSchema = z.object({
   // Informações Básicas
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
   description: z.string().min(10, 'Descrição deve ter pelo menos 10 caracteres'),
-  studioType: z.string().min(1, 'Selecione o tipo de estúdio'),
+  studioType: z.string().min(1, 'Selecione o tipo de estúdio').optional(),
   
   // Contato
   phone: z.string().min(10, 'Telefone deve ter pelo menos 10 dígitos'),
@@ -46,7 +46,7 @@ const studioRegistrationSchema = z.object({
   // Endereço
   address: z.string().min(5, 'Endereço deve ter pelo menos 5 caracteres'),
   city: z.string().min(2, 'Cidade deve ter pelo menos 2 caracteres'),
-  state: z.string().min(2, 'Estado deve ter pelo menos 2 caracteres'),
+  state: z.string().min(2, 'Estado deve ter pelo menos 2 caracteres').optional(),
   zipCode: z.string().min(8, 'CEP deve ter 8 dígitos'),
   
   // Configurações
@@ -55,11 +55,11 @@ const studioRegistrationSchema = z.object({
   minimumHours: z.number().min(1, 'Mínimo de horas deve ser pelo menos 1'),
   
   // Horário de Funcionamento
-  openTime: z.string().min(1, 'Horário de abertura é obrigatório'),
-  closeTime: z.string().min(1, 'Horário de fechamento é obrigatório'),
+  openTime: z.string().min(1, 'Horário de abertura é obrigatório').optional(),
+  closeTime: z.string().min(1, 'Horário de fechamento é obrigatório').optional(),
   
   // Equipamentos (array de strings)
-  equipment: z.array(z.string()).min(1, 'Adicione pelo menos um equipamento'),
+  equipment: z.array(z.string()).min(1, 'Adicione pelo menos um equipamento').optional(),
 });
 
 type StudioRegistrationData = z.infer<typeof studioRegistrationSchema>;
@@ -195,12 +195,12 @@ export function StudioRegistrationForm({ onSubmit, isLoading = false, initialDat
     }
   };
 
-  const onFormSubmit = async (data: StudioRegistrationData) => {
+  const onFormSubmit = handleSubmit(async (data) => {
     await onSubmit({ ...data, images, profileImage });
-  };
+  });
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
+    <form onSubmit={onFormSubmit} className="space-y-6">
       {/* Foto de Perfil */}
       <Card>
         <CardHeader>
@@ -403,11 +403,40 @@ export function StudioRegistrationForm({ onSubmit, isLoading = false, initialDat
 
             <div className="space-y-2">
               <Label htmlFor="state">Estado *</Label>
-              <Input
-                id="state"
-                {...register('state')}
-                placeholder="SP"
-              />
+              <Select onValueChange={(value) => setValue('state', value)} value={watch('state')}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione o estado" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="AC">Acre</SelectItem>
+                  <SelectItem value="AL">Alagoas</SelectItem>
+                  <SelectItem value="AP">Amapá</SelectItem>
+                  <SelectItem value="AM">Amazonas</SelectItem>
+                  <SelectItem value="BA">Bahia</SelectItem>
+                  <SelectItem value="CE">Ceará</SelectItem>
+                  <SelectItem value="DF">Distrito Federal</SelectItem>
+                  <SelectItem value="ES">Espírito Santo</SelectItem>
+                  <SelectItem value="GO">Goiás</SelectItem>
+                  <SelectItem value="MA">Maranhão</SelectItem>
+                  <SelectItem value="MT">Mato Grosso</SelectItem>
+                  <SelectItem value="MS">Mato Grosso do Sul</SelectItem>
+                  <SelectItem value="MG">Minas Gerais</SelectItem>
+                  <SelectItem value="PA">Pará</SelectItem>
+                  <SelectItem value="PB">Paraíba</SelectItem>
+                  <SelectItem value="PR">Paraná</SelectItem>
+                  <SelectItem value="PE">Pernambuco</SelectItem>
+                  <SelectItem value="PI">Piauí</SelectItem>
+                  <SelectItem value="RJ">Rio de Janeiro</SelectItem>
+                  <SelectItem value="RN">Rio Grande do Norte</SelectItem>
+                  <SelectItem value="RS">Rio Grande do Sul</SelectItem>
+                  <SelectItem value="RO">Rondônia</SelectItem>
+                  <SelectItem value="RR">Roraima</SelectItem>
+                  <SelectItem value="SC">Santa Catarina</SelectItem>
+                  <SelectItem value="SP">São Paulo</SelectItem>
+                  <SelectItem value="SE">Sergipe</SelectItem>
+                  <SelectItem value="TO">Tocantins</SelectItem>
+                </SelectContent>
+              </Select>
               {errors.state && (
                 <p className="text-sm text-destructive">{errors.state.message}</p>
               )}

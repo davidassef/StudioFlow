@@ -1,0 +1,38 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg-gradient-192" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#3b82f6"/>
+        <stop offset="100%" style="stop-color:#8b5cf6"/>
+      </linearGradient>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="192" height="192" fill="url(#bg-gradient-192)" rx="19.200000000000003"/>
+    
+    <!-- Icon content -->
+    
+      <!-- Nota musical principal -->
+      <rect x="116" y="36" width="4" height="80" fill="#ffffff" rx="2"/>
+      <ellipse cx="112" cy="116" rx="10" ry="6" fill="#ffffff"/>
+      
+      <!-- Segunda nota -->
+      <rect x="72" y="56" width="4" height="60" fill="#ffffff" rx="2"/>
+      <ellipse cx="68" cy="116" rx="10" ry="6" fill="#ffffff"/>
+      
+      <!-- Conexão entre notas -->
+      <path d="M 76 56 L 120 36 L 120 46 L 76 66 Z" fill="#ffffff"/>
+      
+      <!-- Ondas sonoras -->
+      <g opacity="0.8">
+        <path d="M 56 86 Q 66 81 76 86 Q 86 91 96 86" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+        <path d="M 56 96 Q 66 91 76 96 Q 86 101 96 96" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+        <path d="M 56 106 Q 66 101 76 106 Q 86 111 96 106" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+      </g>
+    
+    
+    <!-- Subtle border -->
+    <rect width="192" height="192" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" rx="19.200000000000003"/>
+  </svg>

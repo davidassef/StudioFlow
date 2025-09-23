@@ -45,6 +45,7 @@
   "author": "StudioFlow Team",
   "license": "MIT",
   "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
     "tailwindcss-animate": "^1.0.7"
   }
 }

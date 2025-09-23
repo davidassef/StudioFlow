@@ -71,8 +71,9 @@ export {
 } from './sheet'
 export { Skeleton } from './skeleton'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
-export { Label } from './label'
-export { Switch } from './switch'
+// export { Label } from './label'
+// export { Switch } from './switch'
+// export { Checkbox } from './checkbox'
 export {
   LoadingSpinner,
   LoadingButton,

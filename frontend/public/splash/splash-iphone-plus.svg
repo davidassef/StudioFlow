@@ -1,0 +1,29 @@
+<svg width="414" height="736" viewBox="0 0 414 736" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="splash-bg-iphone-plus" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#0f172a"/>
+        <stop offset="100%" style="stop-color:#1e293b"/>
+      </linearGradient>
+    </defs>
+    <rect width="414" height="736" fill="url(#splash-bg-iphone-plus)"/>
+    
+    <!-- Logo centralizado -->
+    <g transform="translate(207, 368)">
+      <rect width="120" height="120" fill="url(#bg-gradient-120)" rx="12"/><rect x="80" y="0" width="4" height="80" fill="#ffffff" rx="2"/><ellipse cx="76" cy="80" rx="10" ry="6" fill="#ffffff"/><rect x="36" y="20" width="4" height="60" fill="#ffffff" rx="2"/><ellipse cx="32" cy="80" rx="10" ry="6" fill="#ffffff"/><path d="M 40 20 L 84 0 L 84 10 L 40 30 Z" fill="#ffffff"/><g opacity="0.8">
+        <path d="M 20 50 Q 30 45 40 50 Q 50 55 60 50" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+        <path d="M 20 60 Q 30 55 40 60 Q 50 65 60 60" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+        <path d="M 20 70 Q 30 65 40 70 Q 50 75 60 70" 
+              stroke="#ffffff" stroke-width="2" fill="none"/>
+      </g><rect width="120" height="120" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" rx="12"/>
+    </g>
+    
+    <!-- Texto -->
+    <text x="207" y="468" text-anchor="middle" fill="#ffffff" font-size="24" font-family="Arial, sans-serif" font-weight="bold">
+      StudioFlow
+    </text>
+    <text x="207" y="498" text-anchor="middle" fill="#3b82f6" font-size="16" font-family="Arial, sans-serif">
+      Gestão de Estúdios Musicais
+    </text>
+  </svg>

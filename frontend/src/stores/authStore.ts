@@ -1,12 +1,12 @@
-import { create } from 'zustand'
+﻿import { create } from 'zustand'
+import { supabase, auth, db } from '@/lib/supabase'
 
 export interface User {
   id: string
-  name: string
   email: string
-  type: 'client' | 'provider'
-  avatar?: string
-  phone?: string
+  nome?: string
+  telefone?: string
+  user_type?: 'CLIENTE' | 'PRESTADOR' | 'ADMIN'
   created_at?: string
   updated_at?: string
 }
@@ -17,20 +17,20 @@ export interface LoginData {
 }
 
 export interface RegisterData {
-  name: string
+  nome: string
   email: string
   password: string
-  type: 'client' | 'provider'
-  phone?: string
+  telefone?: string
+  user_type?: 'CLIENTE' | 'PRESTADOR' | 'ADMIN'
 }
 
 interface AuthState {
   user: User | null
-  token: string | null
+  profile: any
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
-  
+
   // Actions
   login: (email: string, password: string) => Promise<void>
   register: (data: RegisterData) => Promise<void>
@@ -40,174 +40,128 @@ interface AuthState {
   clearError: () => void
   isProvider: () => boolean
   isClient: () => boolean
+  loadProfile: () => Promise<void>
+  initialize: () => Promise<void>
 }
 
-const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
-  token: null,
+  profile: null,
   isAuthenticated: false,
   isLoading: false,
   error: null,
 
-      login: async (email: string, password: string) => {
-        set({ isLoading: true, error: null })
-        try {
-          const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-          })
+  initialize: async () => {
+    const session = await auth.getSession()
+    if (session) {
+      set({
+        user: session.user,
+        isAuthenticated: true
+      })
+      await get().loadProfile()
+    }
+  },
 
-          if (!response.ok) {
-            const errorData = await response.json()
-            throw new Error(errorData.message || 'Erro ao fazer login')
-          }
+  login: async (email: string, password: string) => {
+    set({ isLoading: true, error: null })
 
-          const { user, token } = await response.json()
-          
-          set({
-            user,
-            token,
-            isAuthenticated: true,
-            isLoading: false,
-            error: null,
-          })
-        } catch (error) {
-          set({
-            isLoading: false,
-            error: error instanceof Error ? error.message : 'Erro desconhecido',
-          })
-          throw error
-        }
-      },
+    const { data, error } = await auth.signIn(email, password)
 
-      register: async (data: RegisterData) => {
-        set({ isLoading: true, error: null })
-        try {
-          const response = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          })
+    if (error) {
+      set({ error: error.message, isLoading: false })
+      return
+    }
 
-          if (!response.ok) {
-            const errorData = await response.json()
-            throw new Error(errorData.message || 'Erro ao criar conta')
-          }
+    set({
+      user: data.user,
+      isAuthenticated: true,
+      isLoading: false
+    })
 
-          const { user, token } = await response.json()
-          
-          set({
-            user,
-            token,
-            isAuthenticated: true,
-            isLoading: false,
-            error: null,
-          })
-        } catch (error) {
-          set({
-            isLoading: false,
-            error: error instanceof Error ? error.message : 'Erro desconhecido',
-          })
-          throw error
-        }
-      },
+    // Load profile
+    await get().loadProfile()
+  },
 
-      logout: () => {
-        set({
-          user: null,
-          token: null,
-          isAuthenticated: false,
-          error: null,
-        })
-      },
+  register: async (data: RegisterData) => {
+    set({ isLoading: true, error: null })
 
-      updateProfile: async (data: Partial<User>) => {
-        const { user, token } = get()
-        if (!user || !token) {
-          throw new Error('Usuário não autenticado')
-        }
+    const { data: authData, error } = await auth.signUp(
+      data.email,
+      data.password,
+      {
+        nome: data.nome,
+        telefone: data.telefone,
+        user_type: data.user_type || 'CLIENTE'
+      }
+    )
 
-        set({ isLoading: true, error: null })
-        try {
-          const response = await fetch('/api/auth/profile', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(data),
-          })
+    if (error) {
+      set({ error: error.message, isLoading: false })
+      return
+    }
 
-          if (!response.ok) {
-            const errorData = await response.json()
-            throw new Error(errorData.message || 'Erro ao atualizar perfil')
-          }
+    set({
+      user: authData.user,
+      isAuthenticated: true,
+      isLoading: false
+    })
 
-          const updatedUser = await response.json()
-          
-          set({
-            user: { ...user, ...updatedUser },
-            isLoading: false,
-            error: null,
-          })
-        } catch (error) {
-          set({
-            isLoading: false,
-            error: error instanceof Error ? error.message : 'Erro desconhecido',
-          })
-          throw error
-        }
-      },
+    // Create profile
+    if (authData.user) {
+      await db.updateProfile(authData.user.id, {
+        nome: data.nome,
+        telefone: data.telefone,
+        user_type: data.user_type || 'CLIENTE'
+      })
+    }
+  },
 
-      refreshToken: async () => {
-        const { token } = get()
-        if (!token) return
+  logout: async () => {
+    await auth.signOut()
+    set({
+      user: null,
+      profile: null,
+      isAuthenticated: false
+    })
+  },
 
-        try {
-          const response = await fetch('/api/auth/refresh', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          })
+  updateProfile: async (updates: Partial<User>) => {
+    if (!get().user) return
 
-          if (response.ok) {
-            const { token: newToken, user } = await response.json()
-            set({ token: newToken, user })
-          } else {
-            // Token inválido, fazer logout
-            get().logout()
-          }
-        } catch (error) {
-          // Em caso de erro, fazer logout
-          get().logout()
-        }
-      },
+    const { data, error } = await db.updateProfile(get().user!.id, updates)
 
-      clearError: () => {
-        set({ error: null })
-      },
+    if (!error && data) {
+      set({ profile: data })
+    }
+  },
 
-      isProvider: () => {
-        const { user } = get()
-        return user?.type === 'provider'
-      },
+  refreshToken: async () => {
+    // Supabase handles token refresh automatically
+    const session = await auth.getSession()
+    if (session) {
+      set({ user: session.user, isAuthenticated: true })
+    }
+  },
 
-      isClient: () => {
-        const { user } = get()
-        return user?.type === 'client'
-      },
+  clearError: () => {
+    set({ error: null })
+  },
+
+  isProvider: () => {
+    return get().profile?.user_type === 'PRESTADOR'
+  },
+
+  isClient: () => {
+    return get().profile?.user_type === 'CLIENTE'
+  },
+
+  loadProfile: async () => {
+    if (!get().user) return
+
+    const { data, error } = await db.getProfile(get().user!.id)
+
+    if (!error && data) {
+      set({ profile: data })
+    }
+  }
 }))
-
-// Exportações
-export { useAuthStore }
-
-// Hook para facilitar o uso
-export const useAuth = () => {
-  return useAuthStore()
-}

@@ -42,6 +42,34 @@ const initialState: AuthState = {
   authAction: null,
 }
 
+// Helper para acessar localStorage com segurança
+const safeLocalStorage = {
+  getItem: (key: string): string | null => {
+    if (typeof window === 'undefined') return null
+    try {
+      return localStorage.getItem(key)
+    } catch {
+      return null
+    }
+  },
+  setItem: (key: string, value: string): void => {
+    if (typeof window === 'undefined') return
+    try {
+      localStorage.setItem(key, value)
+    } catch {
+      // Silently fail
+    }
+  },
+  removeItem: (key: string): void => {
+    if (typeof window === 'undefined') return
+    try {
+      localStorage.removeItem(key)
+    } catch {
+      // Silently fail
+    }
+  }
+}
+
 function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case 'LOGIN_START':
@@ -118,16 +146,16 @@ interface RegisterData {
   password_confirm: string
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState)
 
   // Verificar se há token salvo no localStorage ao inicializar
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    const refreshToken = localStorage.getItem('refreshToken')
-    const userData = localStorage.getItem('user')
+    const token = safeLocalStorage.getItem('token')
+    const refreshToken = safeLocalStorage.getItem('refreshToken')
+    const userData = safeLocalStorage.getItem('user')
 
     if (token && refreshToken && userData) {
       try {
@@ -140,9 +168,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`
       } catch (error) {
         console.error('Erro ao recuperar dados do usuário:', error)
-        localStorage.removeItem('token')
-        localStorage.removeItem('refreshToken')
-        localStorage.removeItem('user')
+        safeLocalStorage.removeItem('token')
+        safeLocalStorage.removeItem('refreshToken')
+        safeLocalStorage.removeItem('user')
       }
     }
     dispatch({ type: 'SET_LOADING', payload: false })
@@ -152,7 +180,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       dispatch({ type: 'LOGIN_START' })
       
-      const response = await api.post('/auth/login/', {
+      const response = await api.post('/api/auth/login/', {
         email,
         password,
       })
@@ -160,9 +188,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { user, refresh, access } = response.data
 
       // Salvar no localStorage
-      localStorage.setItem('token', access)
-      localStorage.setItem('refreshToken', refresh)
-      localStorage.setItem('user', JSON.stringify(user))
+      safeLocalStorage.setItem('token', access)
+      safeLocalStorage.setItem('refreshToken', refresh)
+      safeLocalStorage.setItem('user', JSON.stringify(user))
 
       // Configurar token no axios
       api.defaults.headers.common['Authorization'] = `Bearer ${access}`
@@ -185,14 +213,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       dispatch({ type: 'LOGIN_START' })
       
-      const response = await api.post('/v1/users/register/', userData)
+      const response = await api.post('/api/v1/users/register/', userData)
 
       const { access, refresh, user } = response.data
 
       // Salvar no localStorage
-      localStorage.setItem('token', access)
-      localStorage.setItem('refreshToken', refresh)
-      localStorage.setItem('user', JSON.stringify(user))
+      safeLocalStorage.setItem('token', access)
+      safeLocalStorage.setItem('refreshToken', refresh)
+      safeLocalStorage.setItem('user', JSON.stringify(user))
 
       // Configurar token no axios
       api.defaults.headers.common['Authorization'] = `Bearer ${access}`
@@ -235,9 +263,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     // Remover do localStorage
-    localStorage.removeItem('token')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('user')
+    safeLocalStorage.removeItem('token')
+    safeLocalStorage.removeItem('refreshToken')
+    safeLocalStorage.removeItem('user')
 
     // Remover token do axios
     delete api.defaults.headers.common['Authorization']
@@ -251,7 +279,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const updatedUser = response.data
       
       // Atualizar localStorage
-      localStorage.setItem('user', JSON.stringify(updatedUser))
+      safeLocalStorage.setItem('user', JSON.stringify(updatedUser))
       
       dispatch({ type: 'UPDATE_USER', payload: updatedUser })
     } catch (error) {

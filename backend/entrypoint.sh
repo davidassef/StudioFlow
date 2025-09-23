@@ -1,14 +1,15 @@
 #!/bin/sh
 
-if [ "$DATABASE" = "postgres" ]
-then
-    echo "Waiting for postgres..."
+# Exit on any error
+set -e
 
-    while ! nc -z $SQL_HOST $SQL_PORT; do
-      sleep 0.1
-    done
+echo "🚀 Starting StudioFlow Backend..."
 
-    echo "PostgreSQL started"
-fi
+# Wait for PostgreSQL using Django's built-in wait_for_db command
+echo "⏳ Waiting for PostgreSQL..."
+python manage.py wait_for_db
 
+echo "✅ PostgreSQL is ready!"
+
+# Execute the main command
 exec "$@"

@@ -7,7 +7,16 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer, UserUpdateSerializer, PasswordChangeSerializer, UserRegistrationSerializer
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.conf import settings
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from .serializers import (
+    UserSerializer, UserUpdateSerializer, PasswordChangeSerializer, 
+    UserRegistrationSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
+)
 
 User = get_user_model()
 
@@ -128,3 +137,108 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             user = User.objects.get(email=request.data['email'])
             response.data['user'] = UserSerializer(user).data
         return response
+
+
+class ForgotPasswordView(APIView):
+    """View para solicitar recuperação de senha."""
+    permission_classes = [permissions.AllowAny]
+    
+    def post(self, request):
+        serializer = ForgotPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            try:
+                user = User.objects.get(email=email)
+                
+                # Gera token e uid
+                token = default_token_generator.make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                
+                # Cria link de redefinição
+                reset_url = f"{settings.FRONTEND_URL}/recuperar-senha/confirmar?uid={uid}&token={token}"
+                
+                # Envia email
+                subject = "Recuperação de Senha - StudioFlow"
+                message = f"""
+                Olá {user.nome},
+                
+                Você solicitou a recuperação de senha para sua conta no StudioFlow.
+                
+                Para redefinir sua senha, clique no link abaixo:
+                {reset_url}
+                
+                Este link expirará em 24 horas.
+                
+                Se você não solicitou esta recuperação, ignore este email.
+                
+                Atenciosamente,
+                Equipe StudioFlow
+                """
+                
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=False,
+                )
+                
+                return Response(
+                    {"message": "Email de recuperação enviado com sucesso."}, 
+                    status=status.HTTP_200_OK
+                )
+                
+            except User.DoesNotExist:
+                return Response(
+                    {"error": "Usuário não encontrado."}, 
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ResetPasswordView(APIView):
+    """View para redefinir senha com token."""
+    permission_classes = [permissions.AllowAny]
+    
+    def post(self, request):
+        serializer = ResetPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            token = serializer.validated_data['token']
+            new_password = serializer.validated_data['new_password']
+            uidb64 = request.data.get('uid')
+            
+            if not uidb64:
+                return Response(
+                    {"error": "UID é obrigatório."}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            try:
+                # Decodifica o UID
+                uid = force_str(urlsafe_base64_decode(uidb64))
+                user = User.objects.get(pk=uid)
+                
+                # Valida o token
+                if default_token_generator.check_token(user, token):
+                    # Define a nova senha
+                    user.set_password(new_password)
+                    user.save()
+                    
+                    return Response(
+                        {"message": "Senha redefinida com sucesso."}, 
+                        status=status.HTTP_200_OK
+                    )
+                else:
+                    return Response(
+                        {"error": "Token inválido ou expirado."}, 
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+                    
+            except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+                return Response(
+                    {"error": "UID inválido."}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

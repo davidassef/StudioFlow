@@ -1,0 +1,88 @@
+<svg width="390" height="844" viewBox="0 0 390 844" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg-gradient-mobile" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#0f172a"/>
+        <stop offset="100%" style="stop-color:#1e293b"/>
+      </linearGradient>
+      <linearGradient id="card-gradient-mobile" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#1e293b"/>
+        <stop offset="100%" style="stop-color:#334155"/>
+      </linearGradient>
+      <linearGradient id="primary-gradient-mobile" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#3b82f6"/>
+        <stop offset="100%" style="stop-color:#8b5cf6"/>
+      </linearGradient>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="390" height="844" fill="url(#bg-gradient-mobile)"/>
+    
+    
+    
+    <!-- Header -->
+    <rect x="0" y="0" width="390" height="60" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    
+    
+    <!-- Mobile header with logo -->
+    <rect x="20" y="15" width="30" height="30" fill="url(#primary-gradient-mobile)" rx="6"/>
+    <text x="60" y="35" fill="#ffffff" font-size="16" font-family="Arial, sans-serif" font-weight="bold">StudioFlow</text>
+    
+    
+    <!-- Search bar -->
+    <rect x="140" y="15" width="200" height="30" fill="#334155" stroke="#475569" stroke-width="1" rx="15"/>
+    <text x="150" y="35" fill="#94a3b8" font-size="12" font-family="Arial, sans-serif">🔍 Buscar...</text>
+    
+    <!-- Main content area -->
+    <rect x="20" y="80" width="350" height="120" fill="url(#card-gradient-mobile)" rx="12" stroke="#475569" stroke-width="1"/>
+    
+    <!-- Stats cards -->
+    <rect x="40" y="100" width="96.66666666666667" height="80" fill="url(#primary-gradient-mobile)" rx="8"/>
+    <text x="50" y="125" fill="#ffffff" font-size="24" font-family="Arial, sans-serif" font-weight="bold">42</text>
+    <text x="50" y="145" fill="#e2e8f0" font-size="12" font-family="Arial, sans-serif">Agendamentos Hoje</text>
+    
+    <rect x="156.66666666666669" y="100" width="96.66666666666667" height="80" fill="#10b981" rx="8"/>
+    <text x="166.66666666666669" y="125" fill="#ffffff" font-size="24" font-family="Arial, sans-serif" font-weight="bold">R$ 2.8k</text>
+    <text x="166.66666666666669" y="145" fill="#e2e8f0" font-size="12" font-family="Arial, sans-serif">Receita do Mês</text>
+    
+    <rect x="273.33333333333337" y="100" width="96.66666666666667" height="80" fill="#f59e0b" rx="8"/>
+    <text x="283.33333333333337" y="125" fill="#ffffff" font-size="24" font-family="Arial, sans-serif" font-weight="bold">8</text>
+    <text x="283.33333333333337" y="145" fill="#e2e8f0" font-size="12" font-family="Arial, sans-serif">Estúdios Ativos</text>
+    
+    <!-- Calendar/Schedule area -->
+    <rect x="20" y="220" width="350" height="584" fill="url(#card-gradient-mobile)" rx="12" stroke="#475569" stroke-width="1"/>
+    
+    <!-- Calendar header -->
+    <text x="40" y="245" fill="#ffffff" font-size="16" font-family="Arial, sans-serif" font-weight="bold">📅 Próximos Agendamentos</text>
+    
+    <!-- Calendar items -->
+    <rect x="40" y="260" width="310" height="40" fill="rgba(59, 130, 246, 0.1)" stroke="#3b82f6" stroke-width="1" rx="6"/>
+    <text x="50" y="275" fill="#3b82f6" font-size="12" font-family="Arial, sans-serif" font-weight="bold">14:00</text>
+    <text x="50" y="290" fill="#cbd5e1" font-size="11" font-family="Arial, sans-serif">Gravação - João Silva</text>
+    
+    <rect x="40" y="310" width="310" height="40" fill="rgba(139, 92, 246, 0.1)" stroke="#8b5cf6" stroke-width="1" rx="6"/>
+    <text x="50" y="325" fill="#8b5cf6" font-size="12" font-family="Arial, sans-serif" font-weight="bold">16:30</text>
+    <text x="50" y="340" fill="#cbd5e1" font-size="11" font-family="Arial, sans-serif">Mixagem - Banda Rock</text>
+    
+    <rect x="40" y="360" width="310" height="40" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1" rx="6"/>
+    <text x="50" y="375" fill="#10b981" font-size="12" font-family="Arial, sans-serif" font-weight="bold">19:00</text>
+    <text x="50" y="390" fill="#cbd5e1" font-size="11" font-family="Arial, sans-serif">Ensaio - Maria Santos</text>
+    
+    
+    <!-- Mobile bottom navigation -->
+    <rect x="0" y="784" width="390" height="60" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <rect x="20" y="799" width="30" height="30" fill="#3b82f6" rx="15"/>
+    <text x="30" y="819" fill="#ffffff" font-size="12" font-family="Arial, sans-serif">📊</text>
+    
+    <rect x="97.5" y="799" width="30" height="30" fill="rgba(255,255,255,0.1)" rx="15"/>
+    <text x="107.5" y="819" fill="#94a3b8" font-size="12" font-family="Arial, sans-serif">📅</text>
+    
+    <rect x="195" y="799" width="30" height="30" fill="rgba(255,255,255,0.1)" rx="15"/>
+    <text x="205" y="819" fill="#94a3b8" font-size="12" font-family="Arial, sans-serif">🎵</text>
+    
+    <rect x="292.5" y="799" width="30" height="30" fill="rgba(255,255,255,0.1)" rx="15"/>
+    <text x="302.5" y="819" fill="#94a3b8" font-size="12" font-family="Arial, sans-serif">👥</text>
+    
+    
+    <!-- Subtle branding -->
+    <text x="290" y="824" fill="#475569" font-size="10" font-family="Arial, sans-serif">StudioFlow PWA</text>
+  </svg>

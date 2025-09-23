@@ -1,21 +1,10 @@
-'use client';
+﻿import dynamic from "next/dynamic"
 
-import { Layout } from '@/components/layout/Layout';
-import { ReservationManager } from '@/components/reservations/ReservationManager';
+const ReservasPage = dynamic(() => import("@/components/pages/ReservasPage"), {
+  ssr: false,
+  loading: () => <div className="flex items-center justify-center min-h-screen">Carregando...</div>
+})
 
-// Mock user data
-const mockUser = {
-  id: '1',
-  name: 'João Silva',
-  email: 'joao@email.com',
-  role: 'admin' as const,
-  avatar: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20business%20man%20avatar%20portrait&image_size=square',
-};
-
-export default function ReservationsPage() {
-  return (
-    <Layout user={mockUser}>
-      <ReservationManager />
-    </Layout>
-  );
+export default function Reservas() {
+  return <ReservasPage />
 }

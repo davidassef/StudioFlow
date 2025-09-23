@@ -167,6 +167,10 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
             <div className="text-right">
               <button
                 type="button"
+                onClick={() => {
+                  onClose();
+                  window.location.href = '/recuperar-senha';
+                }}
                 className="text-sm text-orange-400 hover:text-orange-300 transition-colors duration-200 hover:underline"
               >
                 Esqueceu sua senha?

@@ -12,6 +12,30 @@ jest.mock('next/navigation', () => ({
   })
 }))
 
+// Mock do AuthContext
+jest.mock('@/contexts/AuthContext', () => ({
+  useAuth: () => ({
+    user: {
+      id: '1',
+      nome: 'João Silva',
+      email: 'joao@example.com',
+      user_type: 'prestador'
+    },
+    isAuthenticated: true,
+    isLoading: false,
+    login: jest.fn(),
+    register: jest.fn(),
+    logout: jest.fn()
+  })
+}))
+
+// Mock do Layout
+jest.mock('@/components/layout/Layout', () => {
+  return function MockLayout({ children }: any) {
+    return <div data-testid="layout">{children}</div>
+  }
+})
+
 // Mock dos componentes de gráfico
 jest.mock('recharts', () => ({
   LineChart: ({ children }: any) => <div data-testid="line-chart">{children}</div>,

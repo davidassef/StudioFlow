@@ -8,6 +8,7 @@ import {
   Settings,
   User,
 } from 'lucide-react';
+import { StudioFlowLogo } from '@/components/ui/GoldText';
 
 export function Sidebar() {
   return (
@@ -15,10 +16,16 @@ export function Sidebar() {
       {/* Logo */}
       <div className="flex h-16 items-center px-6 border-b border-border">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">SF</span>
+          <div 
+            className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #FFD700, #FFA500, #FFED4E)',
+              boxShadow: '0 4px 15px rgba(255, 215, 0, 0.4)'
+            }}
+          >
+            <span className="text-black font-bold text-sm">SF</span>
           </div>
-          <span className="text-xl font-bold text-foreground">StudioFlow</span>
+          <StudioFlowLogo size="sm" className="text-xl" />
         </div>
       </div>
 

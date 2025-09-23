@@ -68,7 +68,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'email': {'required': True},
             'nome': {'required': True},
-            'user_type': {'default': 'cliente'},
+            'user_type': {'default': 'CLIENTE'},
         }
     
     def validate(self, attrs):
@@ -80,3 +80,29 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         validated_data.pop('password_confirm')
         user = User.objects.create_user(**validated_data)
         return user
+
+
+class ForgotPasswordSerializer(serializers.Serializer):
+    """Serializer para solicitação de recuperação de senha."""
+    
+    email = serializers.EmailField(required=True)
+    
+    def validate_email(self, value):
+        try:
+            User.objects.get(email=value)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("Não existe usuário com este email.")
+        return value
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    """Serializer para redefinição de senha com token."""
+    
+    token = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, validators=[validate_password])
+    new_password_confirm = serializers.CharField(required=True)
+    
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['new_password_confirm']:
+            raise serializers.ValidationError({"new_password": "As senhas não conferem."})
+        return attrs

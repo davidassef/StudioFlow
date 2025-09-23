@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Backend service
   backend:
@@ -20,11 +18,16 @@ services:
       - SQL_PASSWORD=studioflow_password
       - SQL_HOST=db
       - SQL_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - VAPID_PRIVATE_KEY=dev_vapid_private_key_change_in_production
+      - VAPID_PUBLIC_KEY=dev_vapid_public_key_change_in_production
     depends_on:
       - db
+      - redis
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
              python manage.py runserver 0.0.0.0:8000"
 
   # Frontend service
@@ -36,10 +39,12 @@ services:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - "5102:3000"
+      - "5102:5102"
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
+      - NEXT_PUBLIC_VAPID_KEY=dev_vapid_public_key_change_in_production
+      - NEXT_PUBLIC_WS_URL=ws://localhost:5000/ws/
     depends_on:
       - backend
     command: npm run dev
@@ -56,5 +61,15 @@ services:
     ports:
       - "5433:5432"
 
+  # Redis service for WebSocket and caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
 volumes:
   postgres_data:
+  redis_data:

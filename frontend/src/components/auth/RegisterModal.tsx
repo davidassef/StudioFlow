@@ -55,7 +55,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: Regi
         password: formData.password,
         password_confirm: formData.confirmPassword,
         telefone: formData.phone || '',
-        user_type: formData.userType === 'cliente' ? 'CLIENTE' : 'ADMIN'
+        user_type: formData.userType === 'cliente' ? 'CLIENTE' : 'PRESTADOR'
       }
       
       const result = await register(userData)

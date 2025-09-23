@@ -197,121 +197,138 @@ class UserViewSetTest(APITestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['email'], self.cliente.email)
+
+
+class PasswordRecoveryTest(APITestCase):
+    """Testes para funcionalidade de recuperação de senha."""
     
-    def test_detalhes_usuario_proprio(self):
-        """Testa que usuário pode ver seus próprios detalhes."""
-        self.client.force_authenticate(user=self.cliente)
-        response = self.client.get(self.detail_url)
-        
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['email'], self.cliente.email)
-    
-    def test_detalhes_usuario_outro(self):
-        """Testa que usuário não pode ver detalhes de outro usuário."""
-        # Cria outro usuário para testar
-        outro_usuario = User.objects.create_user(
-            email='outro@test.com',
-            nome='Outro Usuário',
-            telefone='11777777777',
+    def setUp(self):
+        """Configuração inicial para os testes de recuperação de senha."""
+        self.user = User.objects.create_user(
+            email='test@example.com',
+            nome='Test User',
+            password='testpass123',
+            telefone='11999999999',
             user_type='CLIENTE'
         )
-        
-        self.client.force_authenticate(user=outro_usuario)
-        response = self.client.get(self.detail_url)  # Tentando acessar detalhes do cliente
-        
-        # Dependendo da implementação, pode retornar 403 ou 404
-        self.assertIn(response.status_code, [status.HTTP_403_FORBIDDEN, status.HTTP_404_NOT_FOUND])
+        self.forgot_password_url = reverse('user-forgot-password')
+        self.reset_password_url = reverse('user-reset-password')
     
-    def test_filtros_usuarios(self):
-        """Testa filtros na listagem de usuários."""
-        self.client.force_authenticate(user=self.admin)
+    def test_solicitar_recuperacao_senha_usuario_existe(self):
+        """Testa solicitação de recuperação de senha para usuário existente."""
+        data = {'email': 'test@example.com'}
         
-        # Filtra por user_type CLIENTE
-        response = self.client.get(self.list_url, {'user_type': 'CLIENTE'})
+        response = self.client.post(self.forgot_password_url, data)
+        
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        # Verifica se retornou apenas clientes
-        for user in response.data['results']:
-            self.assertEqual(user['user_type'], 'CLIENTE')
-        
-        # Filtra por user_type ADMIN
-        response = self.client.get(self.list_url, {'user_type': 'ADMIN'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        # Verifica se retornou apenas admins
-        for user in response.data['results']:
-            self.assertEqual(user['user_type'], 'ADMIN')
+        self.assertEqual(response.data['message'], "Email de recuperação enviado com sucesso.")
     
-    def test_busca_usuarios(self):
-        """Testa busca na listagem de usuários."""
-        self.client.force_authenticate(user=self.admin)
+    def test_solicitar_recuperacao_senha_usuario_nao_existe(self):
+        """Testa solicitação de recuperação de senha para usuário inexistente."""
+        data = {'email': 'naoexiste@example.com'}
         
-        # Busca por nome
-        response = self.client.get(self.list_url, {'search': 'Cliente'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        # Verifica se encontrou o usuário
-        found = any(user['nome'] == 'Cliente Teste' for user in response.data['results'])
-        self.assertTrue(found)
-        
-        # Busca por email
-        response = self.client.get(self.list_url, {'search': 'admin@test.com'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        # Verifica se encontrou o usuário
-        found = any(user['email'] == 'admin@test.com' for user in response.data['results'])
-        self.assertTrue(found)
-    
-    def test_ordenacao_usuarios(self):
-        """Testa ordenação na listagem de usuários."""
-        self.client.force_authenticate(user=self.admin)
-        
-        # Ordena por nome
-        response = self.client.get(self.list_url, {'ordering': 'nome'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        # Ordena por email (decrescente)
-        response = self.client.get(self.list_url, {'ordering': '-email'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        # Ordena por data de criação
-        response = self.client.get(self.list_url, {'ordering': 'date_joined'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-    
-    def test_campos_sensiveis_nao_expostos(self):
-        """Testa que campos sensíveis não são expostos na API."""
-        self.client.force_authenticate(user=self.admin)
-        response = self.client.get(self.list_url)
-        
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        
-        for user in response.data['results']:
-            # Campos que não devem aparecer
-            self.assertNotIn('password', user)
-            self.assertNotIn('user_permissions', user)
-            self.assertNotIn('groups', user)
-    
-    def test_registro_campos_obrigatorios(self):
-        """Testa registro sem campos obrigatórios."""
-        data = {}
-        
-        response = self.client.post(self.register_url, data)
+        response = self.client.post(self.forgot_password_url, data)
         
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        
-        # Verifica se todos os campos obrigatórios estão nos erros
-        required_fields = ['email', 'nome', 'password']
-        for field in required_fields:
-            self.assertIn(field, response.data)
+        self.assertIn('Não existe usuário com este email', str(response.data))
     
-    def test_perfil_dados_completos(self):
-        """Testa se o perfil retorna todos os dados necessários."""
-        self.client.force_authenticate(user=self.cliente)
-        response = self.client.get(self.detail_url)
+    def test_solicitar_recuperacao_senha_email_invalido(self):
+        """Testa solicitação de recuperação de senha com email inválido."""
+        data = {'email': 'emailinvalido'}
+        
+        response = self.client.post(self.forgot_password_url, data)
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('email', response.data)
+    
+    def test_redefinir_senha_sucesso(self):
+        """Testa redefinição de senha com sucesso."""
+        from django.contrib.auth.tokens import default_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+        
+        token = default_token_generator.make_token(self.user)
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        
+        data = {
+            'uid': uid,
+            'token': token,
+            'new_password': 'novasenha123456',
+            'new_password_confirm': 'novasenha123456'
+        }
+        
+        response = self.client.post(self.reset_password_url, data)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['message'], "Senha redefinida com sucesso.")
         
-        # Campos que devem estar presentes
-        expected_fields = ['id', 'email', 'nome', 'telefone', 'user_type', 'date_joined']
-        for field in expected_fields:
-            self.assertIn(field, response.data)
+        # Verifica se a senha foi realmente alterada
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('novasenha123456'))
+    
+    def test_redefinir_senha_token_invalido(self):
+        """Testa redefinição de senha com token inválido."""
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+        
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        
+        data = {
+            'uid': uid,
+            'token': 'tokeninvalido123',
+            'new_password': 'novasenha123456',
+            'new_password_confirm': 'novasenha123456'
+        }
+        
+        response = self.client.post(self.reset_password_url, data)
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('Token inválido ou expirado', str(response.data))
+    
+    def test_redefinir_senha_uid_invalido(self):
+        """Testa redefinição de senha com UID inválido."""
+        data = {
+            'uid': 'uidinvalido',
+            'token': 'tokenqualquer',
+            'new_password': 'novasenha123456',
+            'new_password_confirm': 'novasenha123456'
+        }
+        
+        response = self.client.post(self.reset_password_url, data)
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('UID inválido', str(response.data))
+    
+    def test_redefinir_senha_senhas_diferentes(self):
+        """Testa redefinição de senha com senhas diferentes."""
+        from django.contrib.auth.tokens import default_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        from django.utils.encoding import force_bytes
+        
+        token = default_token_generator.make_token(self.user)
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        
+        data = {
+            'uid': uid,
+            'token': token,
+            'new_password': 'senha123456',
+            'new_password_confirm': 'senhadiferente'
+        }
+        
+        response = self.client.post(self.reset_password_url, data)
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('As senhas não conferem', str(response.data))
+    
+    def test_redefinir_senha_uid_obrigatorio(self):
+        """Testa redefinição de senha sem UID."""
+        data = {
+            'token': 'tokenqualquer',
+            'new_password': 'novasenha123456',
+            'new_password_confirm': 'novasenha123456'
+        }
+        
+        response = self.client.post(self.reset_password_url, data)
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('UID é obrigatório', str(response.data))

@@ -5,7 +5,7 @@ import { Calendar, momentLocalizer, View, Views } from 'react-big-calendar'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import { useBookings, Booking } from '@/stores/bookingStore'
-import { useRooms } from '@/stores/studioStore'
+import { useStudioStore } from '@/stores/studioStore'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui'
 import { Modal, ModalContent, ModalHeader, ModalTitle, ModalFooter } from '@/components/ui'
@@ -66,7 +66,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
     createBookingWithNotification
   } = useBookings()
   
-  const { rooms, fetchRooms } = useRooms()
+  const { rooms, fetchRooms } = useStudioStore()
 
   // Carregar dados
   useEffect(() => {

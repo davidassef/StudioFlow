@@ -3,6 +3,7 @@ Django>=5.0.0,<5.1.0
 djangorestframework>=3.14.0,<3.15.0
 djangorestframework-simplejwt>=5.3.0,<5.4.0
 django-cors-headers>=4.3.0,<4.4.0
+django-filter>=23.5,<24.0
 
 # Database
 psycopg2-binary>=2.9.9,<2.10.0
@@ -24,3 +25,9 @@ isort>=5.12.0,<5.13.0
 # Utilities
 Pillow>=10.1.0,<10.2.0  # For image processing
 drf-yasg>=1.21.7,<1.22.0  # For API documentation
+
+# PWA & Push Notifications
+pywebpush>=1.14.0,<1.15.0  # For web push notifications
+cryptography>=41.0.0,<42.0.0  # For VAPID keys
+channels>=4.0.0,<4.1.0  # For WebSocket support
+channels-redis>=4.1.0,<4.2.0  # Redis adapter for channels

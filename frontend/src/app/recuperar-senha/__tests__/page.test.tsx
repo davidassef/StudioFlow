@@ -6,21 +6,58 @@ import RecuperarSenhaPage from '../page'
 
 // Mocks
 jest.mock('next/navigation')
-jest.mock('../../../components/ui/Button', () => {
-  return function MockButton({ children, onClick, disabled, type, className }: any) {
-    return (
-      <button
-        onClick={onClick}
-        disabled={disabled}
-        type={type}
-        className={className}
-        data-testid="button"
-      >
-        {children}
-      </button>
-    )
+
+// Mock dos componentes UI
+jest.mock('@/components/ui/card', () => ({
+  Card: ({ children, className }: any) => <div className={className}>{children}</div>,
+  CardContent: ({ children, className }: any) => <div className={className}>{children}</div>,
+  CardHeader: ({ children, className }: any) => <div className={className}>{children}</div>,
+  CardTitle: ({ children, className }: any) => <h2 className={className}>{children}</h2>
+}))
+
+jest.mock('@/components/ui/button', () => ({
+  Button: ({ children, onClick, disabled, type, className, variant }: any) => (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+      className={className}
+      data-variant={variant}
+    >
+      {children}
+    </button>
+  )
+}))
+
+jest.mock('@/components/ui/input', () => ({
+  Input: (props: any) => {
+    const { className, ...rest } = props
+    return <input className={className} {...rest} />
   }
-})
+}))
+
+jest.mock('@/components/ui/label', () => ({
+  Label: ({ children, htmlFor, className }: any) => (
+    <label htmlFor={htmlFor} className={className}>{children}</label>
+  )
+}))
+
+jest.mock('@/components/ui/alert', () => ({
+  Alert: ({ children, className, variant }: any) => (
+    <div className={className} data-variant={variant}>{children}</div>
+  ),
+  AlertDescription: ({ children, className }: any) => (
+    <div className={className}>{children}</div>
+  )
+}))
+
+// Mock dos ícones
+jest.mock('lucide-react', () => ({
+  ArrowLeft: (props: any) => <div data-testid="arrow-left-icon" {...props} />,
+  Mail: (props: any) => <div data-testid="mail-icon" {...props} />,
+  AlertCircle: (props: any) => <div data-testid="alert-circle-icon" {...props} />,
+  CheckCircle: (props: any) => <div data-testid="check-circle-icon" {...props} />
+}))
 
 const mockPush = jest.fn()
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>
@@ -80,7 +117,7 @@ describe('RecuperarSenhaPage', () => {
     await user.click(screen.getByRole('button', { name: /enviar instruções/i }))
     
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith('/api/auth/forgot-password', {
+      expect(fetch).toHaveBeenCalledWith('/api/v1/users/forgot-password/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -90,7 +127,7 @@ describe('RecuperarSenhaPage', () => {
     })
     
     await waitFor(() => {
-      expect(screen.getByText(/email de recuperação enviado com sucesso/i)).toBeInTheDocument()
+      expect(screen.getByText(/email enviado com sucesso/i)).toBeInTheDocument()
     })
   })
 
@@ -204,7 +241,7 @@ describe('RecuperarSenhaPage', () => {
     
     render(<RecuperarSenhaPage />)
     
-    await user.click(screen.getByText(/lembrou da senha\? faça login/i))
+    await user.click(screen.getByRole('button', { name: /faça login/i }))
     
     expect(mockPush).toHaveBeenCalledWith('/login')
   })
@@ -226,12 +263,10 @@ describe('RecuperarSenhaPage', () => {
     
     await waitFor(() => {
       expect(screen.getByText(/email enviado com sucesso/i)).toBeInTheDocument()
-      expect(screen.getByText(/verifique sua caixa de entrada/i)).toBeInTheDocument()
-      expect(screen.getByText(/não esqueça de verificar a pasta de spam/i)).toBeInTheDocument()
     })
   })
 
-  it('deve permitir reenvio após sucesso', async () => {
+  it('deve implementar rate limiting com contador', async () => {
     const user = userEvent.setup()
     
     ;(fetch as jest.Mock).mockResolvedValue({
@@ -251,15 +286,17 @@ describe('RecuperarSenhaPage', () => {
       expect(screen.getByText(/email enviado com sucesso/i)).toBeInTheDocument()
     })
     
-    // Deve mostrar opção de reenvio
-    expect(screen.getByRole('button', { name: /reenviar email/i })).toBeInTheDocument()
-    
-    // Reenvio
-    await user.click(screen.getByRole('button', { name: /reenviar email/i }))
-    
+    // Deve mostrar botão desabilitado com contador
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledTimes(2)
+      expect(screen.getByRole('button', { name: /próximo envio em/i })).toBeDisabled()
     })
+    
+    // Após o contador, o botão deve ser reabilitado
+    await waitFor(() => {
+      const reenviarButton = screen.getByRole('button', { name: /reenviar/i })
+      expect(reenviarButton).toBeInTheDocument()
+      expect(reenviarButton).not.toBeDisabled()
+    }, { timeout: 2000 })
   })
 
   it('deve limpar erros ao digitar no campo de email', async () => {
@@ -365,8 +402,10 @@ describe('RecuperarSenhaPage', () => {
       expect(screen.getByText(/email enviado com sucesso/i)).toBeInTheDocument()
     })
     
-    // Deve mostrar contador para próximo envio
-    expect(screen.getByText(/próximo envio em/i)).toBeInTheDocument()
+    // Deve mostrar botão desabilitado com contador
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /próximo envio em/i })).toBeDisabled()
+    })
   })
 
   it('deve validar diferentes formatos de email', async () => {

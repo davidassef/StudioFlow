@@ -1,0 +1,18 @@
+{
+  "name": "studioflow-pwa-scripts",
+  "version": "1.0.0",
+  "description": "Scripts de teste e demonstração para PWA do StudioFlow",
+  "scripts": {
+    "demo:all": "node demo-notification-integration.js && node demo-backend-integration.js && node demo-push-notifications.js && node demo-offline-features.js",
+    "test:all": "node test-notification-integration.js && node test-backend-integration.js && node test-push-notifications.js && node test-offline-ui.js && node test-offline-data.js && node test-caching-strategies.js && node test-pwa.js",
+    "generate:assets": "node generate-pwa-assets.js && node convert-svg-to-png.js && node generate-screenshots.js",
+    "validate:assets": "node validate-pwa-assets.js"
+  },
+  "keywords": [
+    "pwa",
+    "studioflow",
+    "testing",
+    "demo"
+  ],
+  "author": "Kiro AI Assistant"
+}
