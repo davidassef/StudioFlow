@@ -91,11 +91,12 @@ StudioFlow/
 ### 1. **Desenvolvimento com Docker (Recomendado)**
 ```bash
 # Iniciar todos os serviços (frontend + backend + banco)
+# Agora com Bun para ~3x mais performance no frontend!
 ./start-dev.sh  # Linux/Mac
 start-dev.bat   # Windows
 
 # Acessar aplicação
-http://localhost:5102  # Frontend Next.js
+http://localhost:5102  # Frontend Next.js (com Bun ⚡)
 http://localhost:5000  # Backend Django API
 ```
 
@@ -103,13 +104,18 @@ http://localhost:5000  # Backend Django API
 
 #### **Frontend (Next.js)**
 ```bash
+#### **Frontend (Next.js)**
+```bash
 # Navegar para o diretório do frontend
 cd frontend
 
-# Instalar dependências
-npm install
+# Opção 1: Com Bun (3x mais rápido - Recomendado)
+curl -fsSL https://bun.sh/install | bash
+./dev.sh install  # Instalar dependências
+./dev.sh dev      # Executar desenvolvimento
 
-# Desenvolvimento normal
+# Opção 2: Com npm (tradicional)
+npm install
 npm run dev
 
 # Desenvolvimento com PWA habilitado
@@ -118,6 +124,7 @@ ENABLE_PWA=true npm run dev
 # Build para produção
 npm run build
 npm start
+```
 
 # Testes
 npm test                    # Jest unit tests

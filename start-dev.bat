@@ -70,6 +70,6 @@ echo   docker-compose logs -f backend  # View backend logs
 echo   docker-compose down             # Stop all services
 echo.
 echo 🔧 To install PWA dependencies:
-echo   docker-compose exec frontend npm install
+echo   docker-compose exec frontend bun install
 echo.
 pause

@@ -1,11 +1,12 @@
-FROM node:18-alpine
+# Use Bun official image for better performance
+FROM oven/bun:1-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Install dependencies
-COPY package.json package-lock.json* ./
-RUN npm install
+# Install dependencies using Bun (much faster than npm)
+COPY package.json bun.lockb* ./
+RUN bun install --frozen-lockfile
 
 # Copy all files
 COPY . .
@@ -13,5 +14,5 @@ COPY . .
 # Expose port
 EXPOSE 5102
 
-# Start development server
-CMD ["npm", "run", "dev"]
+# Start development server with Bun
+CMD ["bun", "run", "dev"]
