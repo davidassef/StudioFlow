@@ -11,7 +11,10 @@
     "test:watch": "jest --watch",
     "test:mobile": "playwright test e2e/mobile-simple.spec.ts",
     "test:e2e": "playwright test",
-    "test:e2e:headed": "playwright test --headed"
+    "test:e2e:headed": "playwright test --headed",
+    "dev:bun": "bun run dev",
+    "build:bun": "bun run build",
+    "install:bun": "bun install"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",

@@ -1,0 +1,15 @@
+[install]
+# Cache dependencies for faster installs
+cache = true
+
+# Use hardlinks for faster installs
+hardlinks = true
+
+[run]
+# Enable hot reloading for better development experience
+hot = true
+
+[bundle]
+# Optimize bundle size
+minify = true
+sourcemap = "external"
