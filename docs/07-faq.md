@@ -128,7 +128,7 @@ Sim! Oferecemos ferramentas de importação para:
 - Outros sistemas de agendamento
 - Bancos de dados MySQL/PostgreSQL
 
-Consulte nossa [documentação de migração](migration.md) para detalhes.
+Consulte nossa [documentação de migração](10-supabase-migration.md) para detalhes.
 
 ## Funcionalidades
 
@@ -457,7 +457,7 @@ Oferecemos ferramentas e suporte para migração de:
 - Sistemas de agendamento populares
 - Bancos de dados personalizados
 
-Consulte nossa [documentação de migração](migration.md) ou contate nosso suporte.
+Consulte nossa [documentação de migração](10-supabase-migration.md) ou contate nosso suporte.
 
 ### O sistema funciona em dispositivos móveis?
 

@@ -483,9 +483,9 @@ npm run dev  # Logs aparecem no terminal
 ### 🎯 Após Instalação Bem-Sucedida
 
 1. **📖 Leia a Documentação**
-   - [📋 Especificações](./specifications.md)
-   - [🏗️ Arquitetura](./architecture.md)
-   - [🤝 Como Contribuir](./contributing.md)
+   - [📋 Especificações](./14-specifications.md)
+   - [🏗️ Arquitetura](./02-system-architecture.md)
+   - [🤝 Como Contribuir](./03-contributing-guide.md)
 
 2. **🧪 Execute os Testes**
    ```bash
@@ -499,14 +499,14 @@ npm run dev  # Logs aparecem no terminal
 3. **🔍 Explore a API**
    - Swagger UI: http://localhost:8000/swagger/
    - Django Admin: http://localhost:8000/admin/
-   - [📚 Documentação da API](./api.md)
+   - [📚 Documentação da API](./01-api-reference.md)
 
 4. **🎨 Customize o Design**
-   - [🎨 Design System](./design-system.md)
+   - [🎨 Design System](./05-design-system.md)
    - Componentes em `frontend/src/components/`
 
 5. **🚀 Configure para Produção**
-   - [📦 Guia de Deploy](./deployment.md) (quando disponível)
+   - [📦 Guia de Deploy](./04-deployment-guide.md) (quando disponível)
    - Configurações de segurança
    - Monitoramento e logs
 
@@ -532,7 +532,7 @@ Consulte o [📋 Status do Projeto](./project-status.md) para ver:
 
 > 💡 **Dica:** Mantenha este documento atualizado conforme o projeto evolui.
 
-**📞 Suporte:** Para dúvidas, consulte o [❓ FAQ](./faq.md) ou abra uma issue no GitHub.
+**📞 Suporte:** Para dúvidas, consulte o [❓ FAQ](./07-faq.md) ou abra uma issue no GitHub.
 
 ### 1. Clone o Repositório
 

@@ -1,22 +1,5 @@
 ﻿import { create } from 'zustand'
-// TEMPORARY: commented for theme testing
-// import { db } from '@/lib/supabase'
-
-// TEMPORARY MOCK for theme testing
-const db = {
-  getRooms: async () => ({ data: [], error: new Error('DB disabled for testing') }),
-  createRoom: async (room: any) => ({ data: null, error: new Error('DB disabled for testing') }),
-  updateRoom: async (id: string, updates: any) => ({ data: null, error: new Error('DB disabled for testing') }),
-  deleteRoom: async (id: string) => ({ error: new Error('DB disabled for testing') }),
-  getBookings: async () => ({ data: [], error: new Error('DB disabled for testing') }),
-  createBooking: async (booking: any) => ({ data: null, error: new Error('DB disabled for testing') }),
-  updateBooking: async (id: string, updates: any) => ({ data: null, error: new Error('DB disabled for testing') }),
-  deleteBooking: async (id: string) => ({ error: new Error('DB disabled for testing') }),
-  getEquipments: async () => ({ data: [], error: new Error('DB disabled for testing') }),
-  createEquipment: async (equipment: any) => ({ data: null, error: new Error('DB disabled for testing') }),
-  updateEquipment: async (id: string, updates: any) => ({ data: null, error: new Error('DB disabled for testing') }),
-  deleteEquipment: async (id: string) => ({ error: new Error('DB disabled for testing') })
-}
+import { db } from '@/lib/supabase'
 
 export interface Room {
   id: string

@@ -58,12 +58,12 @@ const HomePage = () => {
           position: fixed !important;
           top: 0 !important;
           left: 0 !important;
-          width: 100vw !important;
+          width: 100% !important;
           height: 100vh !important;
           overflow: hidden !important;
           margin: 0 !important;
           padding: 0 !important;
-          max-width: 100vw !important;
+          max-width: 100% !important;
           max-height: 100vh !important;
           scrollbar-width: none !important;
           -ms-overflow-style: none !important;
@@ -73,12 +73,12 @@ const HomePage = () => {
           position: fixed !important;
           top: 0 !important;
           left: 0 !important;
-          width: 100vw !important;
+          width: 100% !important;
           height: 100vh !important;
           overflow: hidden !important;
           margin: 0 !important;
           padding: 0 !important;
-          max-width: 100vw !important;
+          max-width: 100% !important;
           max-height: 100vh !important;
         }
 
@@ -86,10 +86,10 @@ const HomePage = () => {
           position: fixed !important;
           top: 0 !important;
           left: 0 !important;
-          width: 100vw !important;
+          width: 100% !important;
           height: 100vh !important;
           overflow: hidden !important;
-          max-width: 100vw !important;
+          max-width: 100% !important;
           max-height: 100vh !important;
         }
 
@@ -107,10 +107,10 @@ const HomePage = () => {
       document.documentElement.style.setProperty('position', 'fixed', 'important')
       document.documentElement.style.setProperty('top', '0', 'important')
       document.documentElement.style.setProperty('left', '0', 'important')
-      document.documentElement.style.setProperty('width', '100vw', 'important')
+      document.documentElement.style.setProperty('width', '100%', 'important')
       document.documentElement.style.setProperty('height', '100vh', 'important')
       document.documentElement.style.setProperty('max-height', '100vh', 'important')
-      document.documentElement.style.setProperty('max-width', '100vw', 'important')
+      document.documentElement.style.setProperty('max-width', '100%', 'important')
       document.documentElement.style.setProperty('margin', '0', 'important')
       document.documentElement.style.setProperty('padding', '0', 'important')
 
@@ -118,10 +118,10 @@ const HomePage = () => {
       document.body.style.setProperty('position', 'fixed', 'important')
       document.body.style.setProperty('top', '0', 'important')
       document.body.style.setProperty('left', '0', 'important')
-      document.body.style.setProperty('width', '100vw', 'important')
+      document.body.style.setProperty('width', '100%', 'important')
       document.body.style.setProperty('height', '100vh', 'important')
       document.body.style.setProperty('max-height', '100vh', 'important')
-      document.body.style.setProperty('max-width', '100vw', 'important')
+      document.body.style.setProperty('max-width', '100%', 'important')
       document.body.style.setProperty('margin', '0', 'important')
       document.body.style.setProperty('padding', '0', 'important')
 
@@ -132,10 +132,10 @@ const HomePage = () => {
         nextRoot.style.setProperty('position', 'fixed', 'important')
         nextRoot.style.setProperty('top', '0', 'important')
         nextRoot.style.setProperty('left', '0', 'important')
-        nextRoot.style.setProperty('width', '100vw', 'important')
+        nextRoot.style.setProperty('width', '100%', 'important')
         nextRoot.style.setProperty('height', '100vh', 'important')
         nextRoot.style.setProperty('max-height', '100vh', 'important')
-        nextRoot.style.setProperty('max-width', '100vw', 'important')
+        nextRoot.style.setProperty('max-width', '100%', 'important')
         nextRoot.style.setProperty('margin', '0', 'important')
         nextRoot.style.setProperty('padding', '0', 'important')
       }
@@ -265,14 +265,14 @@ const HomePage = () => {
       // HTML
       document.documentElement.style.setProperty('overflow', 'hidden', 'important')
       document.documentElement.style.setProperty('height', '100vh', 'important')
-      document.documentElement.style.setProperty('width', '100vw', 'important')
+      document.documentElement.style.setProperty('width', '100%', 'important')
       document.documentElement.style.setProperty('margin', '0', 'important')
       document.documentElement.style.setProperty('padding', '0', 'important')
       
       // Body
       document.body.style.setProperty('overflow', 'hidden', 'important')
       document.body.style.setProperty('height', '100vh', 'important')
-      document.body.style.setProperty('width', '100vw', 'important')
+      document.body.style.setProperty('width', '100%', 'important')
       document.body.style.setProperty('margin', '0', 'important')
       document.body.style.setProperty('padding', '0', 'important')
       
@@ -281,7 +281,7 @@ const HomePage = () => {
       if (nextRoot) {
         nextRoot.style.setProperty('overflow', 'hidden', 'important')
         nextRoot.style.setProperty('height', '100vh', 'important')
-        nextRoot.style.setProperty('width', '100vw', 'important')
+        nextRoot.style.setProperty('width', '100%', 'important')
         nextRoot.style.setProperty('margin', '0', 'important')
         nextRoot.style.setProperty('padding', '0', 'important')
       }
@@ -349,9 +349,9 @@ const HomePage = () => {
       body {
         overflow: hidden !important;
         height: 100vh !important;
-        width: 100vw !important;
+        width: 100% !important;
         max-height: 100vh !important;
-        max-width: 100vw !important;
+        max-width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
         position: fixed !important;
@@ -362,9 +362,9 @@ const HomePage = () => {
       html {
         overflow: hidden !important;
         height: 100vh !important;
-        width: 100vw !important;
+        width: 100% !important;
         max-height: 100vh !important;
-        max-width: 100vw !important;
+        max-width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
         position: fixed !important;
@@ -390,9 +390,9 @@ const HomePage = () => {
       #__next {
         overflow: hidden !important;
         height: 100vh !important;
-        width: 100vw !important;
+        width: 100% !important;
         max-height: 100vh !important;
-        max-width: 100vw !important;
+        max-width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
         position: fixed !important;
@@ -406,7 +406,7 @@ const HomePage = () => {
         top: 0 !important;
         left: 0 !important;
         height: 100vh !important;
-        width: 100vw !important;
+        width: 100% !important;
         overflow: hidden !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -427,9 +427,9 @@ const HomePage = () => {
         top: 0 !important;
         left: 0 !important;
         height: 100vh !important;
-        width: 100vw !important;
+        width: 100% !important;
         max-height: 100vh !important;
-        max-width: 100vw !important;
+        max-width: 100% !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -955,17 +955,17 @@ const HomePage = () => {
         top: 0,
         left: 0,
         height: '100vh',
-        width: '100vw',
+        width: '100%',
         overflow: 'hidden',
         margin: 0,
         padding: 0,
         maxHeight: '100vh',
-        maxWidth: '100vw'
+        maxWidth: '100%'
       }}
     >
-      <div className="homepage-content" style={{ height: '100vh', width: '100vw', overflow: 'hidden', maxHeight: '100vh', maxWidth: '100vw' }}>
+      <div className="homepage-content" style={{ height: '100vh', width: '100%', overflow: 'hidden', maxHeight: '100vh', maxWidth: '100%' }}>
         {/* Floating Musical Instruments Background */}
-        <div className="fixed inset-0 pointer-events-none z-50" style={{ maxHeight: '100vh', maxWidth: '100vw', overflow: 'hidden' }}>
+        <div className="fixed inset-0 pointer-events-none z-50" style={{ maxHeight: '100vh', maxWidth: '100%', overflow: 'hidden' }}>
         <Guitar className="floating-instrument text-gold w-20 h-20 top-20 left-10 opacity-90" style={{ animationDelay: '0s' }} />
         <Headphones className="floating-instrument text-gold w-16 h-16 top-40 right-20 opacity-90" style={{ animationDelay: '2s' }} />
         <Mic className="floating-instrument text-gold w-16 h-16 top-60 left-1/3 opacity-90" style={{ animationDelay: '4s' }} />

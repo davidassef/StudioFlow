@@ -42,20 +42,23 @@ Este documento serve como guia permanente para manter a estrutura do projeto Stu
 #### 📁 **Estrutura Obrigatória `/docs`:**
 ```
 docs/
-├── INDEX.md                 # Índice principal (obrigatório)
-├── installation.md          # Guia de instalação
-├── api.md                   # Documentação da API
-├── contributing.md          # Guia de contribuição
-├── faq.md                   # Perguntas frequentes
-├── project-status.md        # Status atual do projeto
-├── specifications.md        # Especificações do sistema
-├── architecture.md          # Arquitetura técnica
-├── execution-plan.md        # Plano de execução
-├── frontend-architecture.md # Arquitetura frontend
-├── design-system.md         # Sistema de design
-├── deployment.md            # Guia de deploy
-├── testing.md               # Estratégias de teste
-└── [outros documentos técnicos]
+├── 00-documentation-index.md          # Índice principal (obrigatório)
+├── 01-api-reference.md                # Documentação da API
+├── 02-system-architecture.md          # Arquitetura técnica
+├── 03-contributing-guide.md           # Guia de contribuição
+├── 04-deployment-guide.md             # Guia de deploy
+├── 05-design-system.md                # Sistema de design
+├── 06-execution-plan.md               # Plano de execução
+├── 07-faq.md                          # Perguntas frequentes
+├── 08-frontend-architecture.md        # Arquitetura frontend
+├── 09-installation-guide.md           # Guia de instalação
+├── 10-supabase-migration.md           # Migração para Supabase
+├── 11-supabase-migration-plan.md      # Plano de migração
+├── 12-project-structure.md            # Estrutura do projeto
+├── 13-reorganization-plan.md          # Plano de reorganização
+├── 14-specifications.md               # Especificações do sistema
+├── 15-testing-guide.md                # Estratégias de teste
+└── pwa/                               # Documentação específica da PWA
 ```
 
 ---
@@ -68,7 +71,7 @@ docs/
 1. **Verificar estrutura atual:** Sempre listar a raiz do projeto antes de fazer mudanças
 2. **Identificar arquivos fora do lugar:** Documentos `.md` na raiz (exceto README e CHANGELOG)
 3. **Propor reorganização:** Se encontrar arquivos mal posicionados, sugerir movimentação
-4. **Manter INDEX.md atualizado:** Sempre que criar/mover documentos, atualizar o índice
+4. **Manter 00-documentation-index.md atualizado:** Sempre que criar/mover documentos, atualizar o índice
 
 #### 🔄 **Fluxo de Trabalho Padrão:**
 ```
@@ -76,7 +79,7 @@ docs/
 2. Identificar problemas de organização
 3. Propor plano de correção
 4. Executar movimentações necessárias
-5. Atualizar INDEX.md
+5. Atualizar 00-documentation-index.md
 6. Validar estrutura final
 ```
 
@@ -88,14 +91,22 @@ docs/
 - **Estrutura:** Sempre iniciar com título H1 e metadados
 
 #### 🏷️ **Convenções de Nomes:**
-- `installation.md` - Guias de instalação
-- `api.md` - Documentação de APIs
-- `contributing.md` - Guias de contribuição
-- `architecture.md` - Documentação de arquitetura
-- `deployment.md` - Guias de deploy
-- `testing.md` - Estratégias de teste
-- `project-status.md` - Status do projeto
-- `specifications.md` - Especificações técnicas
+- `00-documentation-index.md` - Índice principal da documentação
+- `01-api-reference.md` - Documentação de APIs
+- `02-system-architecture.md` - Arquitetura técnica do sistema
+- `03-contributing-guide.md` - Guias de contribuição
+- `04-deployment-guide.md` - Guias de deploy
+- `05-design-system.md` - Sistema de design UI/UX
+- `06-execution-plan.md` - Plano de execução do projeto
+- `07-faq.md` - Perguntas frequentes
+- `08-frontend-architecture.md` - Arquitetura específica do frontend
+- `09-installation-guide.md` - Guia de instalação
+- `10-supabase-migration.md` - Processo de migração para Supabase
+- `11-supabase-migration-plan.md` - Plano detalhado da migração
+- `12-project-structure.md` - Estrutura de arquivos do projeto
+- `13-reorganization-plan.md` - Plano de reorganização da documentação
+- `14-specifications.md` - Especificações técnicas do sistema
+- `15-testing-guide.md` - Estratégias de teste e qualidade
 
 ### 🛡️ **Regras de Proteção**
 
@@ -107,7 +118,7 @@ docs/
 - Criar pastas de documentação fora de `/docs`
 
 #### ✅ **SEMPRE Fazer:**
-- Verificar se INDEX.md está atualizado
+- Verificar se 00-documentation-index.md está atualizado
 - Manter links funcionais entre documentos
 - Usar referências relativas para links internos
 - Seguir a estrutura hierárquica definida

@@ -1298,9 +1298,9 @@ echo "\n✅ Health check completed"
 ## 📚 Recursos Adicionais
 
 ### 📖 Documentação
-- [🏗️ Arquitetura](./architecture.md)
-- [⚙️ Instalação](./installation.md)
-- [🤝 Contribuição](./contributing.md)
+- [🏗️ Arquitetura](./02-system-architecture.md)
+- [⚙️ Instalação](./09-installation-guide.md)
+- [🤝 Contribuição](./03-contributing-guide.md)
 - [📊 Status do Projeto](./project-status.md)
 
 ### 🔗 Links Úteis
