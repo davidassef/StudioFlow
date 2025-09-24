@@ -7,8 +7,6 @@ import { useInView } from 'react-intersection-observer'
 import { useAuthStore } from '../stores/authStore'
 import { GoldText } from './ui/GoldText'
 import AuthModal from './AuthModal'
-import '../styles/no-scroll.css'
-import '../styles/homepage-no-scroll.css'
 import {
   Guitar,
   Piano,
