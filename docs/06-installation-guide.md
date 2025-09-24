@@ -483,7 +483,7 @@ npm run dev  # Logs aparecem no terminal
 ### 🎯 Após Instalação Bem-Sucedida
 
 1. **📖 Leia a Documentação**
-   - [📋 Especificações](./14-specifications.md)
+   - [📋 Especificações](./11-specifications.md)
    - [🏗️ Arquitetura](./02-system-architecture.md)
    - [🤝 Como Contribuir](./03-contributing-guide.md)
 
@@ -502,7 +502,7 @@ npm run dev  # Logs aparecem no terminal
    - [📚 Documentação da API](./01-api-reference.md)
 
 4. **🎨 Customize o Design**
-   - [🎨 Design System](./05-design-system.md)
+   - [🎨 Design System](./09-design-system.md)
    - Componentes em `frontend/src/components/`
 
 5. **🚀 Configure para Produção**
@@ -532,7 +532,7 @@ Consulte o [📋 Status do Projeto](./project-status.md) para ver:
 
 > 💡 **Dica:** Mantenha este documento atualizado conforme o projeto evolui.
 
-**📞 Suporte:** Para dúvidas, consulte o [❓ FAQ](./07-faq.md) ou abra uma issue no GitHub.
+**📞 Suporte:** Para dúvidas, consulte o [❓ FAQ](./05-faq.md) ou abra uma issue no GitHub.
 
 ### 1. Clone o Repositório
 

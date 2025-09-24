@@ -1299,7 +1299,7 @@ echo "\n✅ Health check completed"
 
 ### 📖 Documentação
 - [🏗️ Arquitetura](./02-system-architecture.md)
-- [⚙️ Instalação](./09-installation-guide.md)
+- [⚙️ Instalação](./06-installation-guide.md)
 - [🤝 Contribuição](./03-contributing-guide.md)
 - [📊 Status do Projeto](./project-status.md)
 
