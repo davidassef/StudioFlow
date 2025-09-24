@@ -16,13 +16,7 @@ export function Sidebar() {
       {/* Logo */}
       <div className="flex h-16 items-center px-6 border-b border-border">
         <div className="flex items-center space-x-2">
-          <div 
-            className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg"
-            style={{
-              background: 'linear-gradient(135deg, #FFD700, #FFA500, #FFED4E)',
-              boxShadow: '0 4px 15px rgba(255, 215, 0, 0.4)'
-            }}
-          >
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg gold-bg">
             <span className="text-black font-bold text-sm">SF</span>
           </div>
           <StudioFlowLogo size="sm" className="text-xl" />

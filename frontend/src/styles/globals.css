@@ -4,48 +4,43 @@
 
 @layer base {
   :root {
-    /* StudioFlow Yellow & Black Studio Theme */
-    /* Fundo Principal: Preto profundo (#0A0A0A) */
-    --background: 0 0% 4%;
-    --foreground: 60 9% 98%;
-    
-    /* Fundo Secundário: Preto suave (#1A1A1A) */
-    --card: 0 0% 10%;
-    --card-foreground: 60 9% 98%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 60 9% 98%;
-    
-    /* Cor de Destaque: Amarelo Dourado (#FFD700) - Elegância e sofisticação */
-    --primary: 51 100% 50%;
-    --primary-foreground: 0 0% 4%;
-    
-    /* Secundário: Cinza escuro (#2A2A2A) */
-    --secondary: 0 0% 16%;
-    --secondary-foreground: 60 9% 98%;
-    
-    /* Muted: Cinza médio (#404040) */
-    --muted: 0 0% 25%;
-    --muted-foreground: 0 0% 65%;
-    
-    /* Accent: Amarelo vibrante (#FFC107) */
-    --accent: 45 100% 51%;
+    /* StudioFlow Black + Gold theme (clean and consistent)
+       - Background: deep black
+       - Primary / accents: gold (#FFD700)
+       - Foreground: light gold / near-white for contrast
+    */
+    --background: 0 0% 0%;        /* pure black for consistency */
+    --foreground: 50 20% 90%;     /* warm near-white (slightly golden) */
+
+    --card: 0 0% 6%;
+    --card-foreground: 50 20% 90%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 50 20% 90%;
+
+    --primary: 51 100% 50%;       /* gold: #FFD700 (kept as HSL) */
+    --primary-foreground: 0 0% 4%; /* text on gold buttons: black */
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 50 20% 90%;
+
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 51 100% 50%;
     --accent-foreground: 0 0% 4%;
-    
+
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9% 98%;
-    
-    /* Bordas: Cinza escuro (#333333) */
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
+    --destructive-foreground: 50 20% 90%;
+
+    --border: 0 0% 10%;
+    --input: 0 0% 12%;
     --ring: 51 100% 50%;
     --radius: 0.5rem;
-    
-    /* Charts com paleta amarelo/dourado para o tema studio */
-    --chart-1: 51 100% 50%; /* Amarelo dourado */
-    --chart-2: 45 100% 51%; /* Amarelo vibrante */
-    --chart-3: 42 100% 70%; /* Amarelo claro */
-    --chart-4: 38 92% 50%;  /* Laranja dourado */
-    --chart-5: 35 91% 65%;  /* Laranja suave */
+
+    /* Charts - simplified gold palette */
+    --chart-1: 51 100% 50%; /* gold */
+    --chart-2: 45 100% 45%; /* darker gold */
+    --chart-3: 50 100% 70%; /* light gold */
   }
 }
 
@@ -60,6 +55,71 @@
 }
 
 @layer utilities {
+  /* StudioFlow Black + Gold Premium Utilities */
+  .text-gold {
+    @apply text-primary;
+  }
+  
+  .bg-gold {
+    background: #FFD700;
+    color: #000;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .border-gold {
+    border-color: #FFD700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  }
+  
+  .hover\:border-gold-light:hover {
+    border-color: hsl(51, 100%, 60%);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  }
+  
+  .gold-text {
+    color: #FFD700;
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.25);
+  }
+  
+  .btn-gold {
+    background: #FFD700;
+    color: #000;
+    border: 2px solid #FFD700;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-gold:hover {
+    background: #FFDF00;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .floating-instrument {
+    animation: float 6s ease-in-out infinite;
+    opacity: 0.1;
+    position: absolute;
+    pointer-events: none;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(2deg); }
+    50% { transform: translateY(-15px) rotate(-1deg); }
+    75% { transform: translateY(-25px) rotate(1deg); }
+  }
+  
+  .hero-section {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+  
   .animation-delay-150 {
     animation-delay: 150ms;
   }
@@ -206,171 +266,28 @@
     }
   }
   
-  /* GRADIENTE DOURADO SUPER FORTE - VERSÃO FINAL */
-  .studioflow-gold {
-    background: linear-gradient(90deg, #FFD700 0%, #FFED4E 20%, #FFA500 40%, #FFD700 60%, #FFFF00 80%, #FFD700 100%) !important;
-    background-size: 600% 600% !important;
-    animation: shimmer-gold-super 1.5s linear infinite !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-    text-shadow: 0 0 50px rgba(255, 215, 0, 0.9) !important;
-    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.7)) !important;
-    font-weight: bold !important;
-    position: relative !important;
-    z-index: 10 !important;
+  /* Gold styles - simplified and subtle */
+  .gold-text {
+    color: #FFD700; /* primary gold */
+    text-shadow: 0 0 6px rgba(255,215,0,0.25);
+    font-weight: 600;
   }
-  
-  /* Fallback mais forte */
-  .studioflow-gold-fallback {
-    color: #FFD700 !important;
-    text-shadow: 
-      0 0 15px rgba(255, 215, 0, 1),
-      0 0 25px rgba(255, 215, 0, 0.8),
-      0 0 35px rgba(255, 215, 0, 0.6) !important;
-    animation: super-glow-pulse 1.5s ease-in-out infinite alternate !important;
-    font-weight: bold !important;
+
+  .gold-bg {
+    background-color: hsl(var(--primary));
+    color: var(--primary-foreground);
   }
-  
-  @keyframes shimmer-gold-super {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
-  }
-  
-  @keyframes super-glow-pulse {
-    from {
-      text-shadow: 
-        0 0 15px rgba(255, 215, 0, 1),
-        0 0 25px rgba(255, 215, 0, 0.8),
-        0 0 35px rgba(255, 215, 0, 0.6);
-    }
-    to {
-      text-shadow: 
-        0 0 25px rgba(255, 215, 0, 1),
-        0 0 35px rgba(255, 215, 0, 0.9),
-        0 0 45px rgba(255, 215, 0, 0.7);
-    }
-  }
-  
-  /* Gradiente dourado brilhante para o StudioFlow - VERSÃO MAIS FORTE */
-  .gradient-gold {
-    background: linear-gradient(
-      90deg,
-      #FFD700 0%,
-      #FFED4E 10%,
-      #FFA500 20%,
-      #FFD700 30%,
-      #FFFF00 40%,
-      #FFD700 50%,
-      #FFA500 60%,
-      #FFED4E 70%,
-      #FFD700 80%,
-      #FFFF00 90%,
-      #FFD700 100%
-    );
-    background-size: 600% 600%;
-    animation: shimmer-gold 2s linear infinite;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-    text-shadow: 0 0 50px rgba(255, 215, 0, 0.8) !important;
-    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6)) !important;
-    position: relative;
-  }
-  
-  /* Fallback para navegadores que não suportam background-clip */
-  .gradient-gold-fallback {
-    color: #FFD700 !important;
-    text-shadow: 
-      0 0 10px rgba(255, 215, 0, 0.8),
-      0 0 20px rgba(255, 215, 0, 0.6),
-      0 0 30px rgba(255, 215, 0, 0.4) !important;
-    animation: glow-pulse 2s ease-in-out infinite alternate !important;
-  }
-  
-  @keyframes glow-pulse {
-    from {
-      text-shadow: 
-        0 0 10px rgba(255, 215, 0, 0.8),
-        0 0 20px rgba(255, 215, 0, 0.6),
-        0 0 30px rgba(255, 215, 0, 0.4);
-    }
-    to {
-      text-shadow: 
-        0 0 20px rgba(255, 215, 0, 1),
-        0 0 30px rgba(255, 215, 0, 0.8),
-        0 0 40px rgba(255, 215, 0, 0.6);
-    }
-  }
-  
-  @keyframes shimmer-gold {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-  
-  /* Gradiente dourado para botões */
+
   .btn-gold {
-    background: linear-gradient(
-      135deg,
-      #FFD700 0%,
-      #FFED4E 25%,
-      #FFA500 50%,
-      #FFD700 75%,
-      #FFFF00 100%
-    );
-    background-size: 300% 300%;
-    animation: shimmer-btn 3s ease-in-out infinite;
-    border: 1px solid #FFD700;
-    box-shadow: 
-      0 4px 15px rgba(255, 215, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    background-color: #FFD700;
+    color: #000;
+    border: 1px solid rgba(255,215,0,0.8);
+    box-shadow: 0 6px 18px rgba(255,215,0,0.08);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
-  
+
   .btn-gold:hover {
-    background: linear-gradient(
-      135deg,
-      #FFFF00 0%,
-      #FFD700 25%,
-      #FFA500 50%,
-      #FFD700 75%,
-      #FFED4E 100%
-    );
-    background-size: 300% 300%;
-    box-shadow: 
-      0 6px 20px rgba(255, 215, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
-  }
-  
-  @keyframes shimmer-btn {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-  
-  /* Classe adicional para texto dourado sem gradiente (fallback) */
-  .text-gold {
-    color: #FFD700;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  }
-  
-  /* Classe para ícones dourados */
-  .icon-gold {
-    background: linear-gradient(135deg, #FFD700, #FFA500, #FFED4E);
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(255,215,0,0.12);
   }
 }

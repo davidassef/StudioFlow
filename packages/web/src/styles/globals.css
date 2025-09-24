@@ -4,50 +4,33 @@
 
 @layer base {
   :root {
-    /* StudioFlow Yellow & Black Studio Theme - Light Mode */
-    --background: 60 9% 98%;
-    --foreground: 0 0% 4%;
-    --card: 60 9% 96%;
-    --card-foreground: 0 0% 4%;
-    --popover: 60 9% 96%;
-    --popover-foreground: 0 0% 4%;
+    /* StudioFlow Black + Gold - unified theme */
+    --background: 0 0% 2%;
+    --foreground: 50 20% 90%;
+    --card: 0 0% 6%;
+    --card-foreground: 50 20% 90%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 50 20% 90%;
     --primary: 51 100% 50%;
     --primary-foreground: 0 0% 4%;
-    --secondary: 60 5% 90%;
-    --secondary-foreground: 0 0% 4%;
-    --muted: 60 5% 90%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 45 100% 51%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 50 20% 90%;
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 51 100% 50%;
     --accent-foreground: 0 0% 4%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9% 98%;
-    --border: 60 5% 85%;
-    --input: 60 5% 85%;
+    --destructive-foreground: 50 20% 90%;
+    --border: 0 0% 10%;
+    --input: 0 0% 12%;
     --ring: 51 100% 50%;
     --radius: 0.75rem;
   }
 
   .dark {
-    /* StudioFlow Yellow & Black Studio Theme - Dark Mode */
-    --background: 0 0% 4%;
-    --foreground: 60 9% 98%;
-    --card: 0 0% 10%;
-    --card-foreground: 60 9% 98%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 60 9% 98%;
-    --primary: 51 100% 50%;
-    --primary-foreground: 0 0% 4%;
-    --secondary: 0 0% 16%;
-    --secondary-foreground: 60 9% 98%;
-    --muted: 0 0% 25%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 45 100% 51%;
-    --accent-foreground: 0 0% 4%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 60 9% 98%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 51 100% 50%;
+    /* explicit dark variant kept for compatibility */
+    --background: 0 0% 2%;
+    --foreground: 50 20% 90%;
   }
 }
 
@@ -240,6 +223,12 @@
     @apply animate-pulse bg-muted rounded;
   }
 }
+
+/* Simplified gold utilities for package web */
+.gold-text { color: #FFD700; text-shadow: 0 0 6px rgba(255,215,0,0.18); font-weight: 600 }
+.gold-bg { background-color: #FFD700; color: #000 }
+.btn-gold { background-color: #FFD700; color: #000; border: 1px solid rgba(255,215,0,0.9); box-shadow: 0 8px 24px rgba(255,215,0,0.06) }
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(255,215,0,0.09) }
 
 @layer utilities {
   /* Text utilities */

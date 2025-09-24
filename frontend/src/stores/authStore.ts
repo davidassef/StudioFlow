@@ -1,47 +1,40 @@
-﻿import { create } from 'zustand'
-import { supabase, auth, db } from '@/lib/supabase'
+import { create } from 'zustand'
+
+// TEMPORARY: Mock version of authStore for theme testing
+// Real implementation will be restored after theme testing
 
 export interface User {
   id: string
   email: string
-  nome?: string
-  telefone?: string
-  user_type?: 'CLIENTE' | 'PRESTADOR' | 'ADMIN'
-  created_at?: string
-  updated_at?: string
+  name?: string
 }
 
-export interface LoginData {
+export interface Profile {
+  id: string
+  name: string
   email: string
-  password: string
-}
-
-export interface RegisterData {
-  nome: string
-  email: string
-  password: string
-  telefone?: string
-  user_type?: 'CLIENTE' | 'PRESTADOR' | 'ADMIN'
+  role: 'admin' | 'staff' | 'cliente'
+  phone?: string
+  avatar?: string
+  created_at: string
+  updated_at: string
 }
 
 interface AuthState {
   user: User | null
-  profile: any
+  profile: Profile | null
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
 
-  // Actions
-  login: (email: string, password: string) => Promise<void>
-  register: (data: RegisterData) => Promise<void>
-  logout: () => void
-  updateProfile: (data: Partial<User>) => Promise<void>
-  refreshToken: () => Promise<void>
-  clearError: () => void
-  isProvider: () => boolean
-  isClient: () => boolean
-  loadProfile: () => Promise<void>
+  // Actions (mocked for theme testing)
   initialize: () => Promise<void>
+  login: (email: string, password: string) => Promise<void>
+  register: (email: string, password: string, profile: Partial<Profile>) => Promise<void>
+  logout: () => Promise<void>
+  updateProfile: (updates: Partial<Profile>) => Promise<void>
+  loadProfile: () => Promise<void>
+  clearError: () => void
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -52,116 +45,44 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   error: null,
 
   initialize: async () => {
-    const session = await auth.getSession()
-    if (session) {
-      set({
-        user: session.user,
-        isAuthenticated: true
-      })
-      await get().loadProfile()
-    }
+    console.log('Auth mocked for theme testing')
+    set({ isLoading: false })
   },
 
   login: async (email: string, password: string) => {
-    set({ isLoading: true, error: null })
-
-    const { data, error } = await auth.signIn(email, password)
-
-    if (error) {
-      set({ error: error.message, isLoading: false })
-      return
-    }
-
-    set({
-      user: data.user,
-      isAuthenticated: true,
-      isLoading: false
-    })
-
-    // Load profile
-    await get().loadProfile()
+    console.log('Login mocked for theme testing')
+    set({ isLoading: false, error: 'Auth disabled for theme testing' })
   },
 
-  register: async (data: RegisterData) => {
-    set({ isLoading: true, error: null })
-
-    const { data: authData, error } = await auth.signUp(
-      data.email,
-      data.password,
-      {
-        nome: data.nome,
-        telefone: data.telefone,
-        user_type: data.user_type || 'CLIENTE'
-      }
-    )
-
-    if (error) {
-      set({ error: error.message, isLoading: false })
-      return
-    }
-
-    set({
-      user: authData.user,
-      isAuthenticated: true,
-      isLoading: false
-    })
-
-    // Create profile
-    if (authData.user) {
-      await db.updateProfile(authData.user.id, {
-        nome: data.nome,
-        telefone: data.telefone,
-        user_type: data.user_type || 'CLIENTE'
-      })
-    }
+  register: async (email: string, password: string, profile: Partial<Profile>) => {
+    console.log('Register mocked for theme testing')
+    set({ isLoading: false, error: 'Auth disabled for theme testing' })
   },
 
   logout: async () => {
-    await auth.signOut()
-    set({
-      user: null,
-      profile: null,
-      isAuthenticated: false
+    console.log('Logout mocked for theme testing')
+    set({ 
+      user: null, 
+      profile: null, 
+      isAuthenticated: false, 
+      isLoading: false, 
+      error: null 
     })
   },
 
-  updateProfile: async (updates: Partial<User>) => {
-    if (!get().user) return
-
-    const { data, error } = await db.updateProfile(get().user!.id, updates)
-
-    if (!error && data) {
-      set({ profile: data })
-    }
+  updateProfile: async (updates: Partial<Profile>) => {
+    console.log('Update profile mocked for theme testing')
+    set({ error: 'Auth disabled for theme testing' })
   },
 
-  refreshToken: async () => {
-    // Supabase handles token refresh automatically
-    const session = await auth.getSession()
-    if (session) {
-      set({ user: session.user, isAuthenticated: true })
-    }
+  loadProfile: async () => {
+    console.log('Load profile mocked for theme testing')
+    set({ error: 'Auth disabled for theme testing' })
   },
 
   clearError: () => {
     set({ error: null })
-  },
-
-  isProvider: () => {
-    return get().profile?.user_type === 'PRESTADOR'
-  },
-
-  isClient: () => {
-    return get().profile?.user_type === 'CLIENTE'
-  },
-
-  loadProfile: async () => {
-    if (!get().user) return
-
-    const { data, error } = await db.getProfile(get().user!.id)
-
-    if (!error && data) {
-      set({ profile: data })
-    }
   }
 }))
+
+// End of mock authStore

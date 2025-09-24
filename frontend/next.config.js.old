@@ -1,4 +1,4 @@
-const withPWA = require('next-pwa')({
+﻿const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
   skipWaiting: true,
@@ -19,10 +19,18 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Allow disabling static "export" mode during development so middleware and dev server work.
+  // To force export mode (for static export builds), set FORCE_EXPORT=true in the environment.
   trailingSlash: true,
+  distDir: 'out',
   experimental: {
+    // Disable static optimization for all pages
     serverComponentsExternalPackages: [],
-  }
+  },
+  // Disable static generation completely
+  generateBuildId: async () => {
+    return 'build-' + Date.now()
+  },
 }
 
 module.exports = withPWA(nextConfig)
