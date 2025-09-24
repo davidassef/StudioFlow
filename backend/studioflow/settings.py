@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "users",
     "studios",
     "bookings",
+    "subscriptions",
 ]
 
 MIDDLEWARE = [
