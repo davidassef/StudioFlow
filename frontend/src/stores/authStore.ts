@@ -26,6 +26,7 @@ interface AuthState {
   // Actions (mocked for theme testing)
   initialize: () => Promise<void>
   login: (email: string, password: string) => Promise<void>
+  loginWithGoogle: () => Promise<void>
   register: (email: string, password: string, profile: Partial<Profile>) => Promise<void>
   logout: () => Promise<void>
   updateProfile: (updates: Partial<Profile>) => Promise<void>
@@ -37,7 +38,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   profile: null,
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: false,
   error: null,
 
   initialize: async () => {
@@ -75,6 +76,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
               name: session.user.user_metadata?.nome
             },
             isAuthenticated: true,
+            isLoading: false,
             error: null
           })
           await get().loadProfile()
@@ -83,6 +85,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             user: null,
             profile: null,
             isAuthenticated: false,
+            isLoading: false,
             error: null
           })
         }
@@ -113,6 +116,31 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         error: error.message || 'Erro ao fazer login',
         isLoading: false
       })
+      throw error
+    }
+  },
+
+  loginWithGoogle: async () => {
+    try {
+      set({ isLoading: true, error: null })
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      })
+
+      if (error) throw error
+
+      // O OAuth vai redirecionar automaticamente
+
+    } catch (error: any) {
+      set({
+        error: error.message || 'Erro ao fazer login com Google',
+        isLoading: false
+      })
+      throw error
     }
   },
 
@@ -149,6 +177,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         error: error.message || 'Erro ao registrar',
         isLoading: false
       })
+      throw error
     }
   },
 

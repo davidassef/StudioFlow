@@ -23,14 +23,14 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-slate-900 border border-slate-700 rounded-lg shadow-xl p-8">
+        <div className="bg-black/95 border border-amber-400/30 rounded-2xl shadow-2xl p-8 backdrop-blur-sm">
           <div className="text-center mb-8">
             <StudioFlowLogo className="text-3xl mb-2" />
-            <p className="text-slate-300">Crie sua conta</p>
+            <p className="text-amber-200/80">Crie sua conta</p>
           </div>
 
           <Suspense fallback={<LoadingSpinner />}>
-            <div>Formulário de registro em desenvolvimento</div>
+            <div className="text-amber-200/80">Formulário de registro em desenvolvimento</div>
           </Suspense>
         </div>
       </div>

@@ -36,7 +36,7 @@ const initialState: AuthState = {
   user: null,
   token: null,
   refreshToken: null,
-  isLoading: true,
+  isLoading: false,
   isAuthenticated: false,
   showAuthModal: false,
   authAction: null,
@@ -173,7 +173,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         safeLocalStorage.removeItem('user')
       }
     }
-    dispatch({ type: 'SET_LOADING', payload: false })
+    // Não é necessário definir loading como false aqui, pois já inicia como false
   }, [])
 
   const login = async (email: string, password: string) => {
