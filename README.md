@@ -1,4 +1,4 @@
-# 🎵 StudioFlow - Gestão de Estúdios Musicais
+# 🎵 StudioFlow - Gestão de Estúdios Musicais - 28/03/2026
 
 ## 🏗️ **Arquitetura do Sistema**
 
